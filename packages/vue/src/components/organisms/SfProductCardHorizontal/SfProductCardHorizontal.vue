@@ -1,10 +1,17 @@
 <template>
   <div class="sf-product-card-horizontal">
     <div class="sf-product-card-horizontal__image-wrapper">
-      <!--@slot Use this slot to replace image-->
       <slot
         name="image"
-        v-bind="{ image, title, link, imageHeight, imageWidth }"
+        v-bind="{
+          image,
+          title,
+          link,
+          imageHeight,
+          imageWidth,
+          imageTag,
+          nuxtImgConfig,
+        }"
       >
         <SfLink
           :link="link"
@@ -22,7 +29,8 @@
               :alt="title"
               :width="imageWidth"
               :height="imageHeight"
-              :placeholder="productPlaceholder"
+              :image-tag="imageTag"
+              :nuxt-img-config="nuxtImgConfig"
             />
           </template>
           <SfImage
@@ -32,14 +40,14 @@
             :alt="title"
             :width="imageWidth"
             :height="imageHeight"
-            :placeholder="productPlaceholder"
+            :image-tag="imageTag"
+            :nuxt-img-config="nuxtImgConfig"
           />
         </SfLink>
       </slot>
     </div>
     <div class="sf-product-card-horizontal__main">
       <div class="sf-product-card-horizontal__details">
-        <!--@slot Use this slot to replace title-->
         <slot name="title" v-bind="{ title, link }">
           <SfLink :link="link" class="sf-product-card-horizontal__link">
             <h3 class="sf-product-card-horizontal__title">
@@ -47,19 +55,16 @@
             </h3>
           </SfLink>
         </slot>
-        <!--@slot Use this slot to replace description-->
         <slot name="description">
           <p class="sf-product-card-horizontal__description desktop-only">
             {{ description }}
           </p>
         </slot>
-        <!--@slot Use this slot to place content inside configuration-->
         <div class="sf-product-card-horizontal__configuration">
           <slot name="configuration" />
         </div>
       </div>
       <div class="sf-product-card-horizontal__actions-wrapper">
-        <!--@slot Use this slot to replace price-->
         <slot name="price" v-bind="{ specialPrice, regularPrice }">
           <SfPrice
             :class="{ 'display-none': !regularPrice }"
@@ -68,7 +73,6 @@
             :special="specialPrice"
           />
         </slot>
-        <!--@slot Use this slot to replace reviews-->
         <slot name="reviews" v-bind="{ maxRating, scoreRating }">
           <div
             :class="{ 'display-none': !scoreRating }"
@@ -92,11 +96,9 @@
           </div>
         </slot>
         <div class="sf-product-card-horizontal__actions">
-          <!--@slot Use this slot to place content inside actions-->
           <slot name="actions" />
         </div>
         <div class="sf-product-card-horizontal__add-to-cart">
-          <!--@slot Use this slot to replace add to cart-->
           <slot name="add-to-cart">
             <SfAddToCart
               v-model="itemQuantity"
@@ -110,10 +112,13 @@
       <SfButton
         v-if="wishlistIcon !== false"
         :aria-label="`${ariaLabel} ${title}`"
-        class="sf-button--pure smartphone-only"
+        class="
+          sf-button--pure
+          smartphone-only
+          sf-product-card-horizontal__wishlist-icon
+        "
         @click="toggleIsInWishlist"
       >
-        <!--@slot Use this slot to replace wishlist icon-->
         <slot name="wishlist-icon" v-bind="{ currentWishlistIcon }">
           <SfIcon
             :icon="currentWishlistIcon"
@@ -133,7 +138,6 @@ import SfRating from "../../atoms/SfRating/SfRating.vue";
 import SfImage from "../../atoms/SfImage/SfImage.vue";
 import SfButton from "../../atoms/SfButton/SfButton.vue";
 import SfAddToCart from "../../molecules/SfAddToCart/SfAddToCart.vue";
-import productPlaceholder from "@storefront-ui/shared/images/product_placeholder.svg";
 
 export default {
   name: "SfProductCardHorizontal",
@@ -156,12 +160,12 @@ export default {
       default: "",
     },
     imageWidth: {
-      type: [String, Number],
-      default: 140,
+      type: [Number, String],
+      default: null,
     },
     imageHeight: {
-      type: [String, Number],
-      default: 200,
+      type: [Number, String],
+      default: null,
     },
     title: {
       type: String,
@@ -169,7 +173,7 @@ export default {
     },
     link: {
       type: [String, Object],
-      default: "",
+      default: null,
     },
     /**
      * Link element tag
@@ -215,11 +219,18 @@ export default {
       type: [Number, String],
       default: 1,
     },
+    imageTag: {
+      type: String,
+      default: "",
+    },
+    nuxtImgConfig: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
     return {
       quantity: this.qty,
-      productPlaceholder,
     };
   },
   computed: {
@@ -228,12 +239,6 @@ export default {
     },
     ariaLabel() {
       return this.isInWishlist ? "Remove from wishlist" : "Add to wishlist";
-    },
-    wishlistIconClasses() {
-      const defaultClass = "sf-product-card-horizontal__wishlist-icon";
-      return `${defaultClass} ${
-        this.isOnWishlist ? "sf-product-card-horizontal--on-wishlist" : ""
-      }`;
     },
     itemQuantity: {
       get() {

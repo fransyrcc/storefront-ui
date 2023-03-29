@@ -80,6 +80,24 @@ export default {
       },
       description: "Text for button hiding content",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Slot to place default content",
+    },
+    "view-all": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Slot to replace buttons showing/hiding content",
+    },
   },
 };
 
@@ -97,7 +115,6 @@ const Template = (args, { argTypes }) => ({
     :hide-text="hideText"
     :max-content-height="maxContentHeight"
     style="max-width: 13.75rem"
-    :style="customStyle"
   >
     <SfProductOption 
       v-for="(option, key) in options" 

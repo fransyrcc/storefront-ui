@@ -1,6 +1,5 @@
 <template>
   <SfLink class="sf-category-card" :link="link" :style="style">
-    <!--@slot Default. Here you can pass content of your category card-->
     <slot v-bind="{ label, count }">
       <div class="sf-category-card__details">
         <span
@@ -19,11 +18,6 @@
 </template>
 <script>
 import SfLink from "../../atoms/SfLink/SfLink.vue";
-
-import {
-  mapMobileObserver,
-  unMapMobileObserver,
-} from "../../../utilities/mobile-observer";
 
 export default {
   name: "SfCategoryCard",
@@ -48,33 +42,20 @@ export default {
       default: "",
     },
   },
-  data() {
-    return {
-      isMobileView: false,
-    };
-  },
   computed: {
-    ...mapMobileObserver(),
     style() {
       const background = this.background;
       if (typeof background === "string") {
         return {
-          background: `url('${background}')`,
+          "--category-card-background": `url(${background})`,
         };
       } else {
         return {
-          background: this.isMobileView
-            ? `url('${background.mobile}')`
-            : `url('${background.desktop}')`,
+          "--category-card-background": `url('${background.desktop}')`,
+          "--category-card-background-mobile": `url('${background.mobile}')`,
         };
       }
     },
-  },
-  mounted() {
-    this.isMobileView = this.isMobile;
-  },
-  beforeDestroy() {
-    unMapMobileObserver();
   },
 };
 </script>

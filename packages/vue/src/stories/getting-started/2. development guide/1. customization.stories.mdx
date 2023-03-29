@@ -6,7 +6,7 @@ import pkg from "../../../../package.json";
 
 <style>{`
   a {
-    color: #5ECE7B !important;
+    color: #018937 !important;
   }
 
   .alert {
@@ -16,7 +16,7 @@ import pkg from "../../../../package.json";
   }
 
   .tip {
-    border-left: 5px solid #5ECE7B;
+    border-left: 5px solid #018937;
   }
 
 	.warning {
@@ -137,10 +137,9 @@ You can override them to shape the look and feel of your project. There are two 
 ```scss
 /*
  * use id of DOM root element
- * vue-cli -> #app
- * nuxt-app -> :root
+ * vue-cli or nuxt-app -> :root
  */
-#app {
+:root {
   --font-family--primary: "Raleway", serif;
 }
 ```
@@ -198,7 +197,7 @@ Internal color variables are defined using a SASS mixin that generates all the i
 This code:
 
 ```scss
-@include generate-color-variants(--_c-green-primary, #5ece7b);
+@include generate-color-variants(--_c-green-primary, #018937);
 ```
 
 will generate the following variables:
@@ -232,6 +231,10 @@ This code will generate the following variables:
 #### How to override color variables?
 
 <YouTube youTubeId="dwj2snJegYU" />
+<div class="alert tip">
+Please note that since 0.12.0 version of Storefront UI we recommend using <strong>:root</strong> tag to overwrite global styles instead of <strong>#app</strong> tag.  
+</div> 
+
 
 <div class="alert tip">
 
@@ -272,7 +275,6 @@ Take a look at below example. This is how `SfPagination` component look like out
 Let's say we want to display `prev` and `next` buttons instead of default arrow icons.
 
 In component documentation we can read that it has `next` and `prev` slots. We can use them to add our custom behavior. For every slot you have access to methods and data properties related to it's functionality via slot scope. In our case it would be `go` function that will move forward/backward and `isDisabled` property that tells us if there is a next or previous page.
-We can use the latest to disable buttons when they're not usable.
 
 ```html
 <SfPagination
@@ -281,12 +283,12 @@ We can use the latest to disable buttons when they're not usable.
   :visible="5"
   @click="page => currentPage = page"
 >
-  <template #prev="{ isDisabled, go }">
-    <button @click="go()" :disabled="isDisabled ? true : false">prev</button>
+  <template #prev="{ isDisabled, go, prev }">
+    <button @click="go(prev)" :disabled="isDisabled">prev</button>
   </template>
-  <template #next="{ isDisabled, go }">
-    <button @click="go()" :disabled="isDisabled ? true : false">next</button>
-  </template>
+  <template #next="{ isDisabled, go, next }">
+    <button @click="go(next)" :disabled="isDisabled">next</button>
+    </template>
 </SfPagination>
 ```
 

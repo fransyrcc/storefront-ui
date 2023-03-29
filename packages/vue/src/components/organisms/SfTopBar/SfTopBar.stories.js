@@ -15,6 +15,36 @@ export default {
         component: "Top Bar component with righ or left aligned content.",
       },
     },
+    layout: "fullscreen",
+  },
+  argTypes: {
+    left: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place left content",
+    },
+    center: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place center content",
+    },
+    right: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place right content",
+    },
   },
 };
 

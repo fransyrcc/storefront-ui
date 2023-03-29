@@ -12,7 +12,6 @@
         aria-modal="true"
         class="sf-bottom-modal__container"
       >
-        <!--@slot Use this slot to replace title. -->
         <slot name="title">
           <SfHeading
             :class="{ 'display-none': !title }"
@@ -21,22 +20,19 @@
             class="sf-bottom-modal__title"
           />
         </slot>
-        <!--@slot Use this slot to replace close button for desktop. -->
         <slot name="close-desktop">
           <SfCircleIcon
             class="sf-circle-icon--small sf-bottom-modal__close"
-            aria-label="Close"
+            :aria-label="'Close'"
             icon="cross"
             @click="close"
           />
         </slot>
-        <!--@slot Use this slot to replace content. -->
         <slot />
-        <!--@slot Use this slot to replace close button for mobile. -->
         <slot name="close-mobile">
           <SfButton
             class="sf-button--full-width sf-bottom-modal__cancel"
-            aria-label="Close"
+            :aria-label="'Close'"
             @click="close"
             >Cancel</SfButton
           >

@@ -95,16 +95,6 @@ export default {
     },
   },
   argTypes: {
-    classes: {
-      control: {
-        type: "select",
-        options: ["sf-sidebar--right", ""],
-      },
-      table: {
-        category: "CSS Modifiers",
-      },
-      description: "CSS classes to modify component styling",
-    },
     title: {
       control: "text",
       table: {
@@ -165,10 +155,77 @@ export default {
       defaultValue: true,
       description: "The overlay's visibility",
     },
+    position: {
+      control: "text",
+      table: {
+        category: "Props",
+        type: {
+          summary: "string",
+        },
+        defaultValue: {
+          summary: "left",
+        },
+      },
+      description: "Animation class name based on position value",
+    },
     close: {
       action: "close event emitted",
       table: { category: "Events", type: { summary: null } },
       description: "Emits close event when close button or overlay is clicked",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to add sidebar content",
+    },
+    bar: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the modal bar",
+    },
+    "content-top": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to add sticky top content",
+    },
+    "circle-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace close button",
+    },
+    "content-bottom": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to add content to sticky bottom",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace SfHeading component",
     },
   },
 };
@@ -185,8 +242,8 @@ const Template = (args, { argTypes }) => ({
     :heading-level="headingLevel"
     :button="button"
     :overlay="overlay"
-    :class="classes"
     :persistent="persistent"
+    :position="position"
   >
     Total items: 0
   </SfSidebar>`,
@@ -201,7 +258,7 @@ Common.args = {
 export const OnTheRight = Template.bind({});
 OnTheRight.args = {
   ...Common.args,
-  classes: "sf-sidebar--right",
+  position: "right",
 };
 
 export const NoOverlay = Template.bind({});
@@ -228,7 +285,6 @@ export const UseTitleSlot = (args, { argTypes }) => ({
     :heading-level="headingLevel"
     :button="button"
     :overlay="overlay"
-    :class="classes"
     :persistent="persistent"
   >
     <template #title="{title, subtitle, headingLevel}">
@@ -251,7 +307,6 @@ export const UseCircleIconSlot = (args, { argTypes }) => ({
     :heading-level="headingLevel"
     :button="button"
     :overlay="overlay"
-    :class="classes"
     :persistent="persistent"
   >
     <template #circle-icon="{close}">

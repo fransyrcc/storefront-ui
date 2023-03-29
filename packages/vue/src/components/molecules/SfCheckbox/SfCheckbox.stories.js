@@ -162,14 +162,68 @@ export default {
       description: "Indicates which checkbox is selected.",
     },
     "v-model": {
+      control: "text",
       table: {
-        disable: true,
+        type: {
+          summary: "text",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: "",
+        },
       },
+      defaultValue: "",
+      description: "v-model accepts `selected` prop and emits `change` event",
     },
     change: {
       action: "Change event emitted",
       table: { category: "Events", type: { summary: null } },
       description: "Emits change event when checkbox is clicked",
+    },
+    "show-error-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom error message",
+    },
+    "show-info-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom info message",
+    },
+    "show-hint-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom hint message",
+    },
+    checkmark: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom checkmark markup",
+    },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace label",
     },
   },
 };
@@ -177,9 +231,15 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { SfCheckbox },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      checked: this.selected,
+    };
+  },
   template: `
   <SfCheckbox 
-    v-model="selected"
+    v-model="checked"
+    style="--checkbox-container-width: 15rem;"
     :name="name"      
     :label="label"
     :hintMessage="hintMessage"
@@ -196,6 +256,7 @@ export const Common = Template.bind({});
 Common.args = {
   name: "shipping",
   label: "I want to create an account",
+  hintMessage: "Required.",
 };
 
 export const Selected = Template.bind({});
@@ -238,9 +299,15 @@ Disabled.args = {
 export const UseCheckmarkSlot = (args, { argTypes }) => ({
   components: { SfCheckbox },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      checked: this.selected,
+    };
+  },
   template: `
   <SfCheckbox 
     v-model="checked"
+    style="--checkbox-container-width: 15rem;"
     :name="name"
     :label="label"
     :hintMessage="hintMessage"
@@ -257,15 +324,21 @@ export const UseCheckmarkSlot = (args, { argTypes }) => ({
 });
 UseCheckmarkSlot.args = {
   ...Common.args,
-  checked: true,
+  selected: true,
 };
 
 export const UseErrorMessageSlot = (args, { argTypes }) => ({
   components: { SfCheckbox },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      checked: this.selected,
+    };
+  },
   template: `
   <SfCheckbox 
-    v-model="selected"
+    v-model="checked"
+    style="--checkbox-container-width: 15rem;"
     :name="name"      
     :label="label"
     :hint-message="hintMessage"

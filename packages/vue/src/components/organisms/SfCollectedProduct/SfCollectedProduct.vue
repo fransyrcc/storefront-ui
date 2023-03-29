@@ -58,10 +58,10 @@
       </slot>
     </div>
     <slot name="remove" v-bind="{ removeHandler }">
-      <template :class="{ 'display-none': !hasRemove }">
+      <div :class="{ 'display-none': !hasRemove }">
         <SfCircleIcon
           icon="cross"
-          aria-label="Remove"
+          :aria-label="'Remove'"
           class="
             sf-circle-icon--small
             sf-collected-product__remove
@@ -78,12 +78,12 @@
           @click="removeHandler"
           >Remove</SfButton
         >
-      </template>
+      </div>
     </slot>
     <slot name="more-actions" v-bind="{ actionsHandler }">
-      <template :class="{ 'display-none': !hasMoreActions }">
+      <div :class="{ 'display-none': !hasMoreActions }">
         <SfButton
-          aria-label="More actions"
+          :aria-label="'More actions'"
           class="
             sf-button--pure
             sf-collected-product__more-actions
@@ -93,7 +93,7 @@
         >
           <SfIcon icon="more" size="18px" />
         </SfButton>
-      </template>
+      </div>
     </slot>
   </div>
 </template>
@@ -127,11 +127,11 @@ export default {
       default: "",
     },
     imageWidth: {
-      type: [String, Number],
+      type: [Number, String],
       default: 140,
     },
     imageHeight: {
-      type: [String, Number],
+      type: [Number, String],
       default: 200,
     },
     title: {
@@ -160,7 +160,7 @@ export default {
     },
     link: {
       type: [String, Object],
-      default: "",
+      default: null,
     },
     hasRemove: {
       type: Boolean,

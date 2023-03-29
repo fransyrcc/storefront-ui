@@ -11,7 +11,7 @@
       <div class="navbar__main">
         <SfButton
           class="sf-button--text navbar__filters-button"
-          aria-label="Filters"
+          :aria-label="'Filters'"
           @click="isFilterSidebarOpen = true"
         >
           <SfIcon
@@ -41,26 +41,32 @@
         </div>
         <div class="navbar__view">
           <span class="navbar__view-label desktop-only">View</span>
-          <SfIcon
-            class="navbar__view-icon"
-            :color="'#43464E'"
-            icon="tiles"
-            size="12px"
-            role="button"
-            aria-label="Change to grid view"
+          <SfButton
+            class="sf-button--pure navbar__view-button"
+            :aria-label="'Change to grid view'"
             :aria-pressed="isGridView"
             @click="isGridView = true"
-          />
-          <SfIcon
-            class="navbar__view-icon"
-            :color="'#43464E'"
-            icon="list"
-            size="12px"
-            role="button"
-            aria-label="Change to list view"
+          >
+            <SfIcon
+              class="navbar__view-icon"
+              :color="'#43464E'"
+              icon="tiles"
+              size="12px"
+            />
+          </SfButton>
+          <SfButton
+            class="sf-button--pure navbar__view-button"
+            :aria-label="'Change to list view'"
             :aria-pressed="!isGridView"
             @click="isGridView = false"
-          />
+          >
+            <SfIcon
+              class="navbar__view-icon"
+              :color="'#43464E'"
+              icon="list"
+              size="12px"
+            />
+          </SfButton>
         </div>
       </div>
     </div>
@@ -98,18 +104,25 @@
             v-for="(product, i) in products"
             :key="product.id"
             :style="{ '--index': i }"
+            :colors="product.colors"
             :title="product.title"
             :image="product.image"
-            image-height="auto"
-            image-width="100%"
+            :image-height="326"
+            :image-width="216"
             :regular-price="product.price.regular"
             :special-price="product.price.special"
             :max-rating="product.rating.max"
             :score-rating="product.rating.score"
             :is-in-wishlist="product.isInWishlist"
             :show-add-to-cart-button="true"
+            image-tag="nuxt-img"
+            :nuxt-img-config="{
+              format: 'webp',
+              fit: 'cover',
+            }"
             class="products__product-card"
             @click:wishlist="toggleWishlist(i)"
+            @click:colors="handleSelectedColor($event, i)"
           />
         </transition-group>
         <transition-group
@@ -132,6 +145,13 @@
             :reviews-count="product.reviewsCount"
             :score-rating="product.rating.score"
             :is-in-wishlist="product.isInWishlist"
+            :image-height="200"
+            :image-width="140"
+            image-tag="nuxt-img"
+            :nuxt-img-config="{
+              format: 'webp',
+              fit: 'cover',
+            }"
             class="products__product-card-horizontal"
             @click:wishlist="toggleWishlist(i)"
           >
@@ -497,6 +517,28 @@ export default {
           rating: { max: 5, score: 5 },
           reviewsCount: 8,
           isInWishlist: true,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -508,6 +550,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -519,6 +583,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -530,6 +616,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -541,6 +649,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -552,6 +682,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -563,6 +715,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 6,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
         {
           title: "Cream Beach Bag",
@@ -574,6 +748,28 @@ export default {
           rating: { max: 5, score: 4 },
           reviewsCount: 8,
           isInWishlist: false,
+          colors: [
+            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            {
+              label: "Vivid rose",
+              value: "vivid rose",
+              color: "#DB5593",
+              selected: false,
+            },
+            {
+              label: "Peach",
+              value: "peach",
+              color: "#F59F93",
+              selected: false,
+            },
+            {
+              label: "Citrus",
+              value: "citrus",
+              color: "#FFEE97",
+              selected: false,
+            },
+          ],
         },
       ],
       filters: {
@@ -655,15 +851,11 @@ export default {
       breadcrumbs: [
         {
           text: "Home",
-          route: {
-            link: "#",
-          },
+          link: "#",
         },
         {
           text: "Women",
-          route: {
-            link: "#",
-          },
+          link: "#",
         },
       ],
     };
@@ -680,6 +872,11 @@ export default {
     },
     toggleWishlist(index) {
       this.products[index].isInWishlist = !this.products[index].isInWishlist;
+    },
+    handleSelectedColor(color, index) {
+      this.products[index].colors.map((el) => {
+        el.selected = el.label === color.label ? !el.selected : false;
+      });
     },
   },
 };
@@ -810,6 +1007,16 @@ export default {
       order: 0;
     }
     &-icon {
+      cursor: pointer;
+      margin: 0 var(--spacer-base) 0 var(--spacer-sm);
+      @include for-desktop {
+        margin: 0 var(--spacer-base) 0 0;
+      }
+      &:last-child {
+        margin: 0;
+      }
+    }
+    &-button {
       cursor: pointer;
       margin: 0 var(--spacer-base) 0 var(--spacer-sm);
       @include for-desktop {

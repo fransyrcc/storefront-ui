@@ -203,19 +203,60 @@ export default {
       description:
         "Emits click:toggle when open/close button is clicked in mobile mode",
     },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace label",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the color picker",
+    },
+    close: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace close button",
+    },
+    open: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace open button",
+    },
   },
 };
 
 const Template = (args, { argTypes }) => ({
   components: { SfColorPicker, SfColor },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      opened: this.isOpen,
+    };
+  },
   template: `
   <SfColorPicker
     :class="classes"
     :label="label"
     :has-close="hasClose"
-    :isOpen="isOpen"
-    @click:toggle="() => {this['click:toggle'](); this.isOpen = !this.isOpen}"
+    :isOpen="opened"
+    @click:toggle="() => {this['click:toggle'](); this.opened = !this.opened}"
   >
     <SfColor style="margin: 0.4375rem" v-for="color in colors" :key="color.value" :color="color.color" :selected="color.selected" @click="color.selected = !color.selected"/>
   </SfColorPicker>`,

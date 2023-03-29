@@ -95,6 +95,16 @@ export default {
       description:
         "Equivalent of native button disabled attribute, allows focus for better accessibility",
     },
+    type: {
+      control: "select",
+      defaultValue: "button",
+      options: ["button", "reset", "submit"],
+      table: {
+        category: "Props",
+      },
+      description:
+        "Type of button, which controls the behaviour when it is activated.",
+    },
     link: {
       control: "text",
       defaultValue: undefined,
@@ -105,6 +115,14 @@ export default {
         },
       },
       description: "Link for 'a' tag.",
+    },
+    ariaLabel: {
+      control: "text",
+      defaultValue: "button",
+      table: {
+        category: "Props",
+      },
+      description: "Attribute for 'aria-label' tag.",
     },
     content: {
       control: "text",
@@ -118,6 +136,15 @@ export default {
       },
       description: "Click event. It is passed via v-on='listeners'.",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the button",
+    },
   },
 };
 
@@ -128,6 +155,8 @@ const Template = (args, { argTypes }) => ({
   <SfButton
     :class="classes"
     :disabled="disabled" 
+    :type="type"
+    :aria-label="ariaLabel"
     @click="click"
     :link="link">
       {{content}}
@@ -143,6 +172,19 @@ Primary.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+  ...Primary.args,
+};
+
+export const Submit = Template.bind({});
+Submit.args = {
+  type: "submit",
+  ...Primary.args,
+  content: "Submit",
+};
+
+export const AriaLabel = Template.bind({});
+AriaLabel.args = {
+  ariaLabel: "button",
   ...Primary.args,
 };
 
@@ -196,8 +238,9 @@ export const WithDefaultSlot = (args, { argTypes }) => ({
   <SfButton
     :class="classes"
     :disabled="disabled"
-    @click="onClick"
+    @click="click"
     :link="link">
+    :aria-label="ariaLabel"
     <template>
       <div v-html="content"/>
     </template>

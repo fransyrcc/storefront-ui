@@ -44,15 +44,25 @@ export default {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      description: "Width of the image",
+      defaultValue: null,
+      description:
+        "Width of the image. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     height: {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      description: "Height of the image",
+      defaultValue: null,
+      description:
+        "Height of the image. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     placeholder: {
       control: "text",
@@ -83,6 +93,24 @@ export default {
       },
       description:
         "Native loading attribute supported, either 'eager', 'lazy' or none.",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom element on image overlay",
+    },
+    "placeholder ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom placeholder",
     },
   },
 };
@@ -121,8 +149,6 @@ Common.args = {
       breakpoint: 768,
     },
   ],
-  width: 216,
-  height: 326,
 };
 
 export const WithSrcOnly = Template.bind({});

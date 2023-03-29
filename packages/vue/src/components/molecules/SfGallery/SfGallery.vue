@@ -12,16 +12,32 @@
               @mousemove="moveZoom($event, index)"
               @mouseout="removeZoom(index)"
             >
-              <SfImage
-                ref="sfGalleryBigImage"
-                class="sf-gallery__big-image"
-                :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"
-                :src="picture.desktop.url"
-                :alt="picture.alt"
-                :width="imageWidth"
-                :height="imageHeight"
-                @click="$emit('click:stage', { picture, index })"
-              />
+              <slot
+                name="big-image"
+                v-bind="{
+                  enableZoom,
+                  picture,
+                  index,
+                  imageWidth,
+                  imageHeight,
+                  imageTag,
+                  nuxtImgConfig,
+                }"
+              >
+                <SfImage
+                  ref="sfGalleryBigImage"
+                  class="sf-gallery__big-image"
+                  :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"
+                  :src="picture.desktop.url"
+                  :alt="picture.alt"
+                  :placeholder="picture.placeholder"
+                  :width="imageWidth"
+                  :height="imageHeight"
+                  :image-tag="imageTag"
+                  :nuxt-img-config="nuxtImgConfig"
+                  @click="$emit('click:stage', { picture, index })"
+                />
+              </slot>
             </li>
           </ul>
         </div>
@@ -31,19 +47,33 @@
           ref="outSide"
           :class="{
             'display-none':
-              !outsideZoom || !pictureSelected || (!outsideZoom && !enableZoom),
+              !outsideZoom || !isZoomStarted || (!outsideZoom && !enableZoom),
           }"
           :style="{ width: `${imageWidth}px`, height: `${imageHeight}px` }"
         >
-          <SfImage
-            ref="imgZoom"
-            class="sf-gallery__zoom"
-            :src="pictureSelectedUrl"
-            :width="imageWidth"
-            :height="imageHeight"
-            :lazy="false"
-            :alt="pictureSelected.alt"
-          />
+          <slot
+            name="outside-zoom"
+            v-bind="{
+              definedPicture,
+              imageWidth,
+              imageHeight,
+              imageTag,
+              nuxtImgConfig,
+            }"
+          >
+            <SfImage
+              ref="imgZoom"
+              class="sf-gallery__zoom"
+              :src="definedPicture.url"
+              :width="imageWidth"
+              :height="imageHeight"
+              :lazy="false"
+              :alt="definedPicture.alt"
+              :placeholder="definedPicture.placeholder"
+              :image-tag="imageTag"
+              :nuxt-img-config="nuxtImgConfig"
+            />
+          </slot>
         </div>
       </transition>
     </div>
@@ -61,8 +91,11 @@
             class="sf-gallery__thumb"
             :src="image.mobile.url"
             :alt="image.alt"
+            :placeholder="image.placeholder"
             :width="thumbWidth"
             :height="thumbHeight"
+            :image-tag="thumbImageTag"
+            :nuxt-img-config="thumbNuxtImgConfig"
           />
         </SfButton>
       </slot>
@@ -73,6 +106,7 @@
 import Glide from "@glidejs/glide";
 import SfImage from "../../atoms/SfImage/SfImage.vue";
 import SfButton from "../../atoms/SfButton/SfButton.vue";
+
 export default {
   name: "SfGallery",
   components: {
@@ -86,19 +120,19 @@ export default {
     },
     imageWidth: {
       type: [Number, String],
-      default: 422,
+      default: null,
     },
     imageHeight: {
       type: [Number, String],
-      default: 664,
+      default: null,
     },
     thumbWidth: {
       type: [Number, String],
-      default: 160,
+      default: null,
     },
     thumbHeight: {
       type: [Number, String],
-      default: 160,
+      default: null,
     },
     current: {
       type: Number,
@@ -123,15 +157,40 @@ export default {
       type: Boolean,
       default: false,
     },
+    imageTag: {
+      type: String,
+      default: "img",
+    },
+    nuxtImgConfig: {
+      type: Object,
+      default: () => ({}),
+    },
+    thumbImageTag: {
+      type: String,
+      default: "img",
+    },
+    thumbNuxtImgConfig: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
     return {
       positionStatic: {},
       eventHover: {},
-      pictureSelected: { alt: "" },
       glide: null,
       activeIndex: this.current - 1,
       style: "",
+      pictureSelected: this.images[0] || {
+        alt: "",
+        zoom: "",
+        big: {
+          url: "",
+        },
+        desktop: "",
+        placeholder: "",
+      },
+      isZoomStarted: false,
     };
   },
   computed: {
@@ -145,10 +204,14 @@ export default {
     updatedSliderOptions() {
       return { ...this.sliderOptions, startAt: this.activeIndex };
     },
-    pictureSelectedUrl() {
+    definedPicture() {
       const { zoom, big, desktop } = this.pictureSelected;
       const definedPicture = zoom || big || desktop;
-      return definedPicture ? definedPicture.url : "";
+      definedPicture ? (definedPicture.alt = this.pictureSelected?.alt) : null;
+      definedPicture
+        ? (definedPicture.placeholder = this.pictureSelected?.placeholder)
+        : null;
+      return definedPicture ? definedPicture : "";
     },
   },
   mounted() {
@@ -163,6 +226,13 @@ export default {
       glide.mount();
       this.glide = glide;
     });
+  },
+  updated() {
+    if (this.glide) {
+      this.$nextTick(() => {
+        this.glide.mount();
+      });
+    }
   },
   beforeDestroy() {
     if (this.glide) {
@@ -183,6 +253,7 @@ export default {
       return "";
     },
     go(index) {
+      this.pictureSelected = this.images[index];
       if (!this.glide) return;
       this.activeIndex = index;
       /**
@@ -194,9 +265,9 @@ export default {
         this.glide.go(`=${index}`);
       }
     },
-    startZoom(picture) {
+    startZoom() {
       if (this.enableZoom) {
-        this.pictureSelected = picture;
+        this.isZoomStarted = true;
       }
     },
     moveZoom($event, index) {
@@ -204,8 +275,10 @@ export default {
         this.eventHover = $event;
         if (this.outsideZoom) {
           this.positionStatic = this.positionObject(index);
-          this.$refs.imgZoom.$el.children[0].style.cssText =
-            "top: 0; transform: scale(2);";
+          this.$refs.outSide.style.cssText = `position: absolute; left: ${
+            $event.clientX - this.positionStatic.x
+          }px; top: ${$event.clientY - this.positionStatic.y}px; z-index: 1;`;
+          this.$refs.imgZoom.$el.children[0].style.cssText = `transform: scale(2); width: 300px; height: auto;`;
           this.$refs.imgZoom.$el.children[0].style.transformOrigin = `${
             $event.clientX - this.positionStatic.x
           }px ${$event.clientY - this.positionStatic.y}px`;
@@ -223,7 +296,7 @@ export default {
     },
     removeZoom(index) {
       if (this.enableZoom) {
-        this.pictureSelected = "";
+        this.isZoomStarted = false;
         if (this.outsideZoom) return;
         this.$refs.sfGalleryBigImage[index].$el.children[0].style.transform =
           "scale(1)";

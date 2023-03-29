@@ -132,6 +132,7 @@ export default {
           "Component locating and marking on map using tile data. Built from main component - SfStoreLocator and internal components - SfStoreLocatorItem.",
       },
     },
+    layout: "fullscreen",
   },
   decorators: [
     () => ({
@@ -359,7 +360,8 @@ export default {
         },
       },
       defaultValue: "",
-      description: "Picture width (for internal component)",
+      description:
+        "Picture width (for internal component). Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     pictureHeight: {
       control: "text",
@@ -373,7 +375,8 @@ export default {
         },
       },
       defaultValue: "",
-      description: "Picture height (for internal component)",
+      description:
+        "Picture height (for internal component). Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     address: {
       control: "text",
@@ -445,6 +448,76 @@ export default {
       description:
         "Emits update:center event when center of the map is changed",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfStoreLocator` component. Use this slot to show stores cards",
+    },
+    "marker-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfStoreLocator` component. Use this slot to change the icon of the stores, remember to update `markerIconSize` and `markerIconAnchor` accordingly",
+    },
+    "map-loading": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfStoreLocator` component. Use this slot to customize the loading indicator while the map library loads",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfStore` component. Use this slot to place information about store",
+    },
+    media: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfStore` component. Use this slot to show media elements",
+    },
+    heading: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfStore` component. Use this slot to replace name element",
+    },
+    distance: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfStore` component. Use this slot to replace distance element",
+    },
   },
 };
 
@@ -466,7 +539,6 @@ const Template = (args, { argTypes }) => ({
     :fly-to-store-zoom="flyToStoreZoom"
     @library:loaded="this['library:loaded']"
     @update:zoom="this['update:zoom']"
-    @map:ready="this['map:ready']"
     @location:error="this['location:error']"
   >
     <SfStore

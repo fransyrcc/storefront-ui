@@ -79,6 +79,46 @@ export default {
       description:
         "Carousel options after glide.js (https://glidejs.com/docs/)",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfCarousel` component. Use this slot to place `SfCarouselItem` elements",
+    },
+    prev: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfCarousel` component. Slot for icon moving to the previous item ",
+    },
+    next: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfCarousel` component. Slot for icon moving to the next item ",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfCarouselItem` component. Use this slot to place item's content",
+    },
   },
 };
 
@@ -90,7 +130,7 @@ const Template = (args, { argTypes }) => ({
   :style="{maxWidth: '1140px', margin: 'auto'}"
   >
     <SfCarouselItem v-for="(item, i) in 12" :key="i">
-      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #5ECE7B; color: #FFF; font-size: 2.5rem">
+      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #018937; color: #FFF; font-size: 2.5rem">
         {{item}}
       </div>
     </SfCarouselItem>
@@ -111,7 +151,7 @@ export const UseNextSlot = (args, { argTypes }) => ({
       <button @click="go">NEXT</button>
     </template>
     <SfCarouselItem v-for="(item, i) in 12" :key="i">
-      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #5ECE7B; color: #FFF; font-size: 2.5rem">
+      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #018937; color: #FFF; font-size: 2.5rem">
         {{item}}
       </div>
     </SfCarouselItem>
@@ -129,7 +169,7 @@ export const UsePrevSlot = (args, { argTypes }) => ({
       <button @click="go">PREV</button>
     </template>
     <SfCarouselItem v-for="(item, i) in 12" :key="i">
-      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #5ECE7B; color: #FFF; font-size: 2.5rem">
+      <div style="display: flex; align-items: center; justify-content: center; height: 300px; background-color: #018937; color: #FFF; font-size: 2.5rem">
         {{item}}
       </div>
     </SfCarouselItem>

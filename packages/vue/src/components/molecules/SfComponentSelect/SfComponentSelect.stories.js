@@ -142,6 +142,7 @@ export default {
           "",
           "sf-component-select--underlined",
           "sf-component-select--no-chevron",
+          "sf-component-select--label-right",
         ],
       },
       table: {
@@ -163,17 +164,17 @@ export default {
       description: "Label text",
     },
     selected: {
-      control: "object",
+      control: "text",
       table: {
         category: "Props for main component",
         type: {
-          summary: "object",
+          summary: "string",
         },
         defaultValue: {
           summary: "",
         },
       },
-      defaultValue: { value: "" },
+      defaultValue: "",
       description: "Selected item value",
     },
     size: {
@@ -264,9 +265,73 @@ export default {
       description: "Emits change event when option is chosen",
     },
     "v-model": {
+      control: "text",
       table: {
-        disable: true,
+        type: {
+          summary: "text",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: "",
+        },
       },
+      defaultValue: "",
+      description: "v-model accepts `selected` prop and emits `change` event",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside select component",
+    },
+    icon: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place custom icon",
+    },
+    cancel: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place custom cancel button",
+    },
+    "error-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place custom error message element",
+    },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace label",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfComponentSelectOption`.Use this slot to place options in `SfComponentSelect` component",
     },
   },
 };
@@ -336,6 +401,12 @@ export const NoChevron = Template.bind({});
 NoChevron.args = {
   ...Common.args,
   classes: "sf-component-select--no-chevron",
+};
+
+export const WithLabelOnRight = Template.bind({});
+WithLabelOnRight.args = {
+  ...Common.args,
+  classes: "sf-component-select--label-right",
 };
 
 export const LongOptionsList = Template.bind({});

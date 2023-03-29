@@ -109,23 +109,19 @@ export default {
       defaultValue: "",
       description: "Indicate if this option is disabled",
     },
-    required: {
-      control: "boolean",
-      table: {
-        category: "Props",
-        type: {
-          summary: "boolean",
-        },
-        defaultValue: {
-          summary: false,
-        },
-      },
-      defaultValue: false,
-    },
     "v-model": {
+      control: "text",
       table: {
-        disable: true,
+        type: {
+          summary: "text",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: "",
+        },
       },
+      defaultValue: "",
+      description: "v-model accepts `selected` prop and emits `change` event",
     },
     change: {
       action: "change event emitted",
@@ -136,6 +132,42 @@ export default {
       action: "input event emitted",
       table: { category: "Events" },
       description: "Emits input event when option is clicked",
+    },
+    checkmark: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom checkmark markup",
+    },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom label",
+    },
+    "details ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom details",
+    },
+    "description ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom description",
     },
   },
 };
@@ -157,7 +189,6 @@ const Template = (args, { argTypes }) => ({
     :name="name"
     :value="value"
     :disabled="disabled"
-    :required="required"
     v-model="selectedValue"
     @change="change"
     @input="input"
@@ -199,7 +230,6 @@ export const UseCheckmarkSlot = (args, { argTypes }) => ({
     :name="name"
     :value="value"
     :disabled="disabled"
-    :required="required"
     @change="change"
     @input="input"
   >
@@ -223,7 +253,6 @@ export const UseLabelSlot = (args, { argTypes }) => ({
     :name="name"
     :value="value"
     :disabled="disabled"
-    :required="required"
     @change="change"
     @input="input"
   >
@@ -246,7 +275,6 @@ export const UseDetailsSlot = (args, { argTypes }) => ({
     :name="name"
     :value="value"
     :disabled="disabled"
-    :required="required"
     @change="change"
     @input="input"
   >
@@ -269,7 +297,6 @@ export const UseDescriptionSlot = (args, { argTypes }) => ({
     :name="name"
     :value="value"
     :disabled="disabled"
-    :required="required"
     @change="change"
     @input="input"
   >

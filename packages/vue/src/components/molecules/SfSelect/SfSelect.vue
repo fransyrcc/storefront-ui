@@ -1,5 +1,6 @@
 <template>
   <div
+    v-will-change="'font-size'"
     class="sf-select"
     :class="{
       'is-selected': value || placeholder,
@@ -8,7 +9,7 @@
       'is-invalid': !valid,
     }"
   >
-    <label :for="label" class="sf-select__label">
+    <label :for="label" class="sf-select__label will-change">
       <slot name="label" :label="label">
         {{ label }}
       </slot>
@@ -19,6 +20,9 @@
       v-bind="$attrs"
       :value="value"
       :disabled="disabled"
+      :aria-invalid="!valid"
+      :aria-required="required"
+      :aria-describedby="errorMessage ? `${label}-error` : null"
       class="sf-select__dropdown"
       @change="changeHandler"
     >
@@ -34,14 +38,17 @@
         <slot name="placeholder" v-bind="{ placeholder }" />
         {{ placeholder }}
       </option>
-      <!-- @slot Slot to replace select options -->
       <slot />
     </select>
     <div class="sf-select__error-message">
       <transition name="sf-fade">
         <!-- @slot Custom error message of form select -->
         <slot name="errorMessage" v-bind="{ errorMessage }">
-          <span :class="{ 'display-none': valid }">
+          <span
+            :id="`${label}-error`"
+            :class="{ 'display-none': valid }"
+            aria-live="assertive"
+          >
             {{ errorMessage }}
           </span>
         </slot>
@@ -51,13 +58,14 @@
 </template>
 <script>
 import { focus } from "../../../utilities/directives";
+import { willChange } from "../../../utilities/directives";
 import SfSelectOption from "./_internal/SfSelectOption.vue";
 import Vue from "vue";
 
 Vue.component("SfSelectOption", SfSelectOption);
 export default {
   name: "SfSelect",
-  directives: { focus },
+  directives: { focus, willChange },
   props: {
     label: {
       type: String,

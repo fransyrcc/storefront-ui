@@ -1,4 +1,4 @@
-import { icons } from "@storefront-ui/shared/icons/icons";
+import { icons } from "@storefront-ui/vue/icons/icons";
 import { sizesValues as sizes } from "@storefront-ui/shared/variables/sizes";
 import { iconColorsValues as colors } from "@storefront-ui/shared/variables/colors";
 import { SfCharacteristic } from "@storefront-ui/vue";
@@ -129,6 +129,43 @@ export default {
         },
       },
       description: "Characteristic description ",
+    },
+    text: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Characteristic text. Slot content will replace default title and description text",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace title button",
+    },
+    "description ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace description button",
+    },
+    "icon ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace icon",
     },
   },
 };

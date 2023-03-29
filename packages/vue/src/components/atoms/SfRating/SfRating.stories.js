@@ -1,4 +1,4 @@
-import { icons } from "@storefront-ui/shared/icons/icons";
+import { icons } from "@storefront-ui/vue/icons/icons";
 import { SfRating, SfIcon } from "@storefront-ui/vue";
 const iconsNames = Object.keys(icons);
 
@@ -70,6 +70,26 @@ export default {
       description:
         "It can be single SVG path (string) or array of SVG paths or icon name from our icons list(such as 'star`)",
     },
+    "icon-positive": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Custom icons that starts from the left side. Provide single icon that will be automatically repeated",
+    },
+    "icon-negative": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Custom icons that are on the right side. Provide single icon that will be automatically repeated ",
+    },
   },
 };
 
@@ -95,6 +115,14 @@ WithIcon.args = {
   ...Common.args,
   icon: "heart",
 };
+
+export const ChangedColors = (args, { argTypes }) => ({
+  components: { SfRating, SfIcon },
+  props: Object.keys(argTypes),
+  template: `
+  <SfRating style="--icon-color: gold; --icon-color-negative: pink;" :max="max" :score="score" :icon="icon" />`,
+});
+ChangedColors.args = { ...Common.args };
 
 export const WithIconPositiveSlot = (args, { argTypes }) => ({
   components: { SfRating, SfIcon },

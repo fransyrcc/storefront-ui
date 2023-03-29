@@ -43,6 +43,15 @@ export default {
       description:
         "Defines shape for SfSkeleton. Available values: 'paragraph', 'image', 'button', 'input', 'avatar'",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace default skeleton",
+    },
   },
 };
 
@@ -62,7 +71,7 @@ export const Image = (args, { argTypes }) => ({
 });
 Image.args = { ...Common.args };
 
-export const ParagrapInputAndButton = (args, { argTypes }) => ({
+export const ParagraphInputAndButton = (args, { argTypes }) => ({
   components: { SfSkeleton },
   props: Object.keys(argTypes),
   template: `
@@ -72,7 +81,7 @@ export const ParagrapInputAndButton = (args, { argTypes }) => ({
       <SfSkeleton type="button" style="margin: 0 auto;" :class="classes" />
     </div>`,
 });
-ParagrapInputAndButton.args = { ...Common.args };
+ParagraphInputAndButton.args = { ...Common.args };
 
 export const AvatarAndParagraphs = (args, { argTypes }) => ({
   components: { SfSkeleton },

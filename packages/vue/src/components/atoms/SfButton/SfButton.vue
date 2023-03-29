@@ -16,10 +16,11 @@
     :style="[data.style, data.staticStyle]"
     :aria-disabled="props.disabled"
     :link="props.link"
+    :type="props.type"
+    :aria-label="props.ariaLabel"
     v-bind="data.attrs"
     v-on="!props.disabled ? listeners : {}"
   >
-    <!--@slot Use this slot to place content inside the button.-->
     <slot />
   </component>
 </template>
@@ -41,9 +42,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: "button",
+      validator: (value) => ["button", "submit", "reset"].includes(value),
+    },
     link: {
       type: [String, Object],
       default: null,
+    },
+    ariaLabel: {
+      type: String,
+      default: "button",
     },
   },
   linkActive(link, disabled) {

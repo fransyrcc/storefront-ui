@@ -62,6 +62,7 @@ export default {
           "Footer component. Built from main component - SfFooter and internal components -SfFooterColumn.",
       },
     },
+    layout: "fullscreen",
   },
   argTypes: {
     open: {
@@ -113,6 +114,26 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description:
         "Emits click event when column title is clicked on mobile mode.It is emitted with the array of opened columns",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfFooter` component. Use this slot to place footer content",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfFooterColumn` component. Use this slot to footer column content",
     },
   },
 };
@@ -236,7 +257,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Common = Template.bind({});
 Common.args = {
-  open: ["About us", "Help", "Social"],
+  open: ["About us", "Help"],
   title: "Storefront UI",
   logo: "/assets/logo.svg",
 };

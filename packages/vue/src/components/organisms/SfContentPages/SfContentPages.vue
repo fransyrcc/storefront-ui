@@ -28,7 +28,6 @@
               :key="`${page.title}-${itemKey}`"
               class="sf-content-pages__list-item"
             >
-              <!-- @slot Custom menu-item markup -->
               <slot name="menu-item" v-bind="{ updatePage, page, active }">
                 <SfMenuItem
                   :class="{ 'is-active': isPageActive(page) }"
@@ -52,7 +51,6 @@
         </div>
       </div>
       <div class="sf-content-pages__content">
-        <!-- @slot Slot for Content Page -->
         <slot />
       </div>
     </section>
@@ -68,10 +66,6 @@ import SfList from "../SfList/SfList.vue";
 import SfMenuItem from "../../molecules/SfMenuItem/SfMenuItem.vue";
 import SfIcon from "../../atoms/SfIcon/SfIcon.vue";
 import SfBar from "../../molecules/SfBar/SfBar.vue";
-import {
-  mapMobileObserver,
-  unMapMobileObserver,
-} from "../../../utilities/mobile-observer";
 export default {
   name: "SfContentPages",
   components: {
@@ -96,7 +90,6 @@ export default {
     };
   },
   computed: {
-    ...mapMobileObserver(),
     categories() {
       const items = [];
       const orphans = { items: [] };
@@ -129,18 +122,6 @@ export default {
       get: () => this.active,
     });
     return { provided };
-  },
-  watch: {
-    isMobile(mobile) {
-      if (mobile) {
-        this.$emit("click:change", "");
-        return;
-      }
-      this.$emit("click:change", this.categories[0].items[0].title);
-    },
-  },
-  beforeDestroy() {
-    unMapMobileObserver();
   },
   methods: {
     updatePage(title) {

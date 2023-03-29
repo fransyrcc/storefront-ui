@@ -61,9 +61,18 @@ export default {
       description: "Selected quantity",
     },
     "v-model": {
+      control: "number",
       table: {
-        disable: true,
+        type: {
+          summary: "number",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: 1,
+        },
       },
+      defaultValue: 1,
+      description: "v-model accepts `qty` prop and emits native events",
     },
     click: {
       action: "Click on button event emitted",
@@ -75,13 +84,37 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description: "Emits input event when input value is changed",
     },
+    "quantity-select-input": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom content that will replace default quantity selector",
+    },
+    "add-to-cart-btn": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Custom content that will replace default Add to cart button design",
+    },
   },
 };
 
 const Template = (args, { argTypes }) => ({
   components: { SfAddToCart },
   props: Object.keys(argTypes),
-  template: `<SfAddToCart v-model="qty" :disabled="disabled"  @click="click" @input="input" />`,
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  template: `<SfAddToCart v-model="quantity" :disabled="disabled"  @click="click" @input="input" />`,
 });
 
 export const Common = Template.bind({});
@@ -93,15 +126,20 @@ Disabled.args = { disabled: true };
 export const WithAddToCartSlot = (args, { argTypes }) => ({
   components: { SfAddToCart },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
   template: `
   <SfAddToCart 
     :disabled="disabled"
     @click="click"
     @input="input"
-    :qty="qty"
+    :qty="quantity"
   >
-    <template #quantity-select-input="{qty}">
-      <select v-model="qty">
+    <template #quantity-select-input="{quantity}">
+      <select v-model="quantity">
         <option value="1">1</option>
         <option value="5">5</option>
         <option value="25">25</option>

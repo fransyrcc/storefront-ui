@@ -1,4 +1,4 @@
-import { SfModal } from "@storefront-ui/vue";
+import { SfModal, SfButton } from "@storefront-ui/vue";
 export default {
   title: "Components/Molecules/Modal",
   component: SfModal,
@@ -17,6 +17,7 @@ export default {
       "modal-border": { value: "", control: "text" },
       "modal-max-height": { value: "", control: "text" },
       "modal-background": { value: "var(--c-white)", control: "text" },
+      "modal-content-height": { value: "", control: "text" },
       "modal-content-padding": {
         value: "var(--spacer-base) var(--spacer-sm)",
         control: "text",
@@ -112,9 +113,18 @@ export default {
         "Modal transition effect. Could be one of [the default ones](https://docs.storefrontui.io/?path=/docs/utilities-transitions-docs--page).",
     },
     "v-model": {
+      control: "boolean",
       table: {
-        disable: true,
+        type: {
+          summary: "boolean",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: false,
+        },
       },
+      defaultValue: false,
+      description: "v-model accepts `visible` prop and emits `close` event",
     },
     close: {
       action: "close event emitted",
@@ -122,20 +132,56 @@ export default {
       description:
         "Emits close event when clicked on close button or outside modal",
     },
+    "close ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the close button",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the modal",
+    },
+    "modal-bar": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the modal bar",
+    },
   },
 };
 
 const Template = (args, { argTypes }) => ({
-  components: { SfModal },
+  components: { SfModal, SfButton },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      modalVisible: true,
+    };
+  },
   template: `
+  <div>
+  <SfButton @click="modalVisible = true">
+    Open modal
+  </SfButton>
   <SfModal
-    :visible="visible"
+    :visible="modalVisible"
     :title="title"
     :overlay="overlay"
     :cross="cross"
     :persistent="persistent"
-    @close="close"
+    @close="modalVisible = false"
   >
     <p>HELLO STOREFRONT UI!</p>
     <form action="">
@@ -143,13 +189,12 @@ const Template = (args, { argTypes }) => ({
       <input type="text">
       <button type="button">hello</button>
     </form>
-  </SfModal>`,
+  </SfModal></div>`,
 });
 
 export const Common = Template.bind({});
 Common.args = {
   title: "My title",
-  visible: true,
 };
 
 export const WithoutOverlay = Template.bind({});
@@ -171,22 +216,32 @@ Cross.args = {
 };
 
 export const UseCloseSlot = (args, { argTypes }) => ({
-  components: { SfModal },
+  components: { SfModal, SfButton },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      modalVisible: true,
+    };
+  },
   template: `
+  <div>
+  <SfButton @click="modalVisible = true">
+    Open modal
+  </SfButton>
   <SfModal
-    :visible="visible"
+    :visible="modalVisible"
     :title="title"
     :overlay="overlay"
     :cross="cross"
     :persistent="persistent"
-    @close="close"
+    @close="modalVisible = false"
   >
     HELLO STOREFRONT UI!
     <template #close>
       close
     </template>
-  </SfModal>`,
+  </SfModal>
+  </div>`,
 });
 UseCloseSlot.args = {
   ...Common.args,

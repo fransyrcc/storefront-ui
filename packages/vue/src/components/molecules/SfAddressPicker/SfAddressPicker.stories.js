@@ -110,14 +110,62 @@ export default {
       description:
         "Emits change event with the name of picked address component",
     },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfAddress` component. Here you should pass address details",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfAddressPicker` component. Use this slot to pass addresses in `SfAddress` components",
+    },
+    icon: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to have custom checkmark",
+    },
+    "v-model": {
+      control: "text",
+      table: {
+        type: {
+          summary: "text",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: "",
+        },
+      },
+      defaultValue: "",
+      description: "v-model accepts `selected` prop and emits `change` event",
+    },
   },
 };
 
 const Template = (args, { argTypes }) => ({
   components: { SfAddressPicker },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      checked: this.selected,
+    };
+  },
   template: `
-  <SfAddressPicker v-model="selected" @change="change">
+  <SfAddressPicker v-model="checked" @change="change">
     <SfAddress :name="name">
       <span>{{title}}</span>
       <span>{{street}}</span>

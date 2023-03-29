@@ -2,7 +2,6 @@
   <div class="sf-header" :class="{ 'is-sticky': sticky, 'is-hidden': hidden }">
     <div class="sf-header__wrapper">
       <header ref="header" class="sf-header__header">
-        <!--@slot Use this slot to replace logo with text or image-->
         <slot name="logo" v-bind="{ logo, title }">
           <SfLink link="/">
             <SfImage
@@ -17,7 +16,6 @@
           </SfLink>
         </slot>
         <div class="sf-header__aside">
-          <!-- @slot Use this slot for language or currency selector -->
           <slot name="aside" />
         </div>
         <div class="sf-header__actions">
@@ -27,7 +25,6 @@
           >
             <slot name="navigation"></slot>
           </nav>
-          <!--@slot Use this slot to replace default search bar-->
           <slot name="search" v-bind="{ searchValue, searchPlaceholder }">
             <SfSearchBar
               :value="searchValue"
@@ -38,7 +35,6 @@
               @keyup.enter="$emit('enter:search', $event)"
             />
           </slot>
-          <!--@slot Use this slot to replace default header icons with custom content-->
           <slot
             name="header-icons"
             v-bind="{
@@ -55,7 +51,7 @@
                 :class="{ 'display-none': !accountIcon }"
                 class="sf-button--pure sf-header__action"
                 data-testid="accountIcon"
-                aria-label="Account"
+                :aria-label="'Account'"
                 @click="$emit('click:account')"
               >
                 <SfIcon
@@ -70,14 +66,12 @@
                 :class="{ 'display-none': !wishlistIcon }"
                 class="sf-button--pure sf-header__action"
                 data-testid="wishlistIcon"
-                aria-label="Wishlist"
+                :aria-label="'Wishlist'"
                 @click="$emit('click:wishlist')"
               >
                 <SfIcon
                   class="sf-header__icon"
                   :icon="wishlistIcon"
-                  :has-badge="wishlistHasProducts"
-                  :badge-label="wishlistItemsQty"
                   size="1.25rem"
                   :class="{
                     'sf-header__icon is-active': activeIcon === 'wishlist',
@@ -88,14 +82,12 @@
                 :class="{ 'display-none': !cartIcon }"
                 class="sf-button--pure sf-header__action"
                 data-testid="cartIcon"
-                aria-label="Cart"
+                :aria-label="'Cart'"
                 @click="$emit('click:cart')"
               >
                 <SfIcon
                   class="sf-header__icon"
                   :icon="cartIcon"
-                  :has-badge="cartHasProducts"
-                  :badge-label="cartItemsQty"
                   size="1.25rem"
                   :class="{
                     'sf-header__icon is-active': activeIcon === 'cart',
@@ -115,10 +107,6 @@ import SfHeaderNavigationItem from "./_internal/SfHeaderNavigationItem.vue";
 import SfHeaderNavigation from "./_internal/SfHeaderNavigation.vue";
 Vue.component("SfHeaderNavigation", SfHeaderNavigation);
 Vue.component("SfHeaderNavigationItem", SfHeaderNavigationItem);
-import {
-  mapMobileObserver,
-  unMapMobileObserver,
-} from "../../../utilities/mobile-observer";
 import { isClient } from "../../../utilities/helpers";
 import SfImage from "../../atoms/SfImage/SfImage.vue";
 import SfSearchBar from "../../molecules/SfSearchBar/SfSearchBar.vue";
@@ -140,11 +128,11 @@ export default {
       default: "",
     },
     logoHeight: {
-      type: Number,
+      type: [Number, String],
       default: 35,
     },
     logoWidth: {
-      type: Number,
+      type: [Number, String],
       default: 34,
     },
     title: {
@@ -208,7 +196,6 @@ export default {
     };
   },
   computed: {
-    ...mapMobileObserver(),
     cartHasProducts() {
       return parseInt(this.cartItemsQty, 10) > 0;
     },
@@ -242,7 +229,6 @@ export default {
     }
   },
   beforeDestroy() {
-    unMapMobileObserver();
     if (this.isSticky) {
       window.removeEventListener("scroll", this.scrollHandler, {
         passive: true,

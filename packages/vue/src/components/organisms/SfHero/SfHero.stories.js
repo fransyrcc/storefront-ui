@@ -55,6 +55,50 @@ export default {
         description: "Overridden other component's CSS variable",
         control: "text",
       },
+      "--hero-item-button-width": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-height": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-padding": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-color": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-transition": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-background": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-cursor": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-wrap": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-text-transform": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-text-decoration": {
+        value: "",
+        control: "text",
+      },
+      "--hero-item-button-border-radius": {
+        value: "",
+        control: "text",
+      },
     },
     // end of code generated automatically
     docs: {
@@ -63,6 +107,7 @@ export default {
           "Full-width hero component with autoplay and navigation arrows. Built from main component - SfHero and internal component - SfHeroItem.",
       },
     },
+    layout: "fullscreen",
   },
   argTypes: {
     classes: {
@@ -169,15 +214,95 @@ export default {
     },
     link: {
       control: "text",
+      defaultValue: undefined,
       table: {
         category: "Props for SfHeroItem component",
         defaultValue: {
-          summary: "",
+          summary: "null",
         },
       },
-      defaultValue: "",
       description:
         "Link to be used in button if necessary (for SfHeroItem component)",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfHero` component. Use this slot to pass `SfHeroItems` components",
+    },
+    prev: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHero` component. Use this slot to pass custom button that moves to the previous item",
+    },
+    next: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHero` component. Use this slot to pass custom button that moves to the next item",
+    },
+    bullets: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHero` component. Use this slot to pass custom markup for pagination bullets",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeroItem` component. Use this slot to replace title element",
+    },
+    "subtitle ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeroItem` component. Use this slot to replace subtitle element",
+    },
+    "call-to-action": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot `all-to-action` for `SfHeroItem` component. Use this slot to replace default SfButton component. ",
+    },
+    withImgTag: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot `withImgTag` for `SfHeroItem` component. Slot dedicated to img tags or other components with this tag (e.g. SfImage, SfCimage) that can be used as images for background. If you want to use this slot, make sure that background and image props are NOT provided (in SfHeroItem component). ",
     },
   },
 };

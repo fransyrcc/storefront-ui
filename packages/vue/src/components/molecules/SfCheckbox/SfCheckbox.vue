@@ -18,9 +18,13 @@
         :checked="isChecked"
         :disabled="disabled"
         class="sf-checkbox__input"
+        :aria-invalid="!valid"
+        :aria-required="required"
+        :aria-describedby="
+          errorMessage ? `${nameWithoutWhitespace}-error` : null
+        "
         @change="inputHandler"
       />
-      <!-- @slot Custom check mark markup -->
       <slot name="checkmark" v-bind="{ isChecked, disabled }">
         <span
           class="sf-checkbox__checkmark"
@@ -33,7 +37,6 @@
           />
         </span>
       </slot>
-      <!-- @slot Custom label markup -->
       <slot name="label" v-bind="{ label, isChecked, disabled }">
         <span :class="{ 'display-none': !label }" class="sf-checkbox__label">{{
           label
@@ -42,14 +45,19 @@
     </label>
     <div class="sf-checkbox__message">
       <transition name="sf-fade">
-        <!-- @slot Custom message of form input -->
         <slot
           v-if="!disabled"
           :name="computedMessageSlotName"
           v-bind="{ computedMessage }"
         >
-          <div :class="computedMessageClass">{{ computedMessage }}</div></slot
-        >
+          <div
+            :id="`${nameWithoutWhitespace}-error`"
+            :class="computedMessageClass"
+            aria-live="assertive"
+          >
+            {{ computedMessage }}
+          </div>
+        </slot>
       </transition>
     </div>
   </div>
@@ -139,6 +147,9 @@ export default {
         "sf-checkbox__message--info",
         this.required ? "sf-checkbox__message--hint" : ""
       );
+    },
+    nameWithoutWhitespace() {
+      return this.name.replace(/\s/g, "");
     },
   },
   methods: {

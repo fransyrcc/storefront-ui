@@ -51,6 +51,14 @@ export default {
         value: "var(--spacer-sm)",
         control: "text",
       },
+      "grouped-product-image-width": {
+        value: "",
+        control: "text",
+      },
+      "grouped-product-image-height": {
+        value: "",
+        control: "text",
+      },
       "grouped-product-item-quantity-selector-left": {
         value: "50%",
         control: "text",
@@ -190,14 +198,16 @@ export default {
       table: {
         category: "Props for SfGroupedProductItem component",
       },
-      description: "Product image width, without unit",
+      description:
+        "Product image width, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     imageHeight: {
       control: "text",
       table: {
         category: "Props for SfGroupedProductItem component",
       },
-      description: "Product image height, without unit",
+      description:
+        "Product image height, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     imagePlaceholder: {
       control: "text",
@@ -273,14 +283,94 @@ export default {
       description: "Link to product",
     },
     "v-model": {
+      control: "number",
       table: {
-        disabled: true,
+        type: {
+          summary: "number",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: 1,
+        },
       },
+      defaultValue: 1,
+      description:
+        "v-model in SfGroupedProductItem accepts `qty` prop and emits native events",
     },
     input: {
       action: "input event emitted",
       table: { category: "Events", type: { summary: null } },
       description: "Emits input event when quantity selector value is changed",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfGroupedProduct` component. Use this slot to place grouped product items",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot `title` for `SfGroupedProductItem` component. Use this slot to replace title element",
+    },
+    "image ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot `image` for `SfGroupedProductItem` component. Use this slot to replace image element",
+    },
+    details: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfGroupedProductItem` component. Use this slot to pass custom details",
+    },
+    configuration: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfGroupedProductItem` component. Use this slot to pass custom configuration",
+    },
+    price: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfGroupedProductItem` component. Use this slot to pass custom price element",
+    },
+    "input ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfGroupedProductItem` component. Use this slot to replace quantity selector",
     },
   },
 };
@@ -297,7 +387,7 @@ const Template = (args, { argTypes }) => ({
     inputHandler(value) {
       this.productQty = value;
       this.input(value);
-    }
+    },
   },
   template: `
   <SfGroupedProduct
@@ -340,6 +430,12 @@ export const UseConfigurationSlot = (args, { argTypes }) => ({
       productQty: 1,
     };
   },
+  methods: {
+    inputHandler(value) {
+      this.productQty = value;
+      this.input(value);
+    },
+  },
   template: `
   <SfGroupedProduct
     :settings="settings"
@@ -371,6 +467,12 @@ export const UseImageSlot = (args, { argTypes }) => ({
       productQty: 1,
     };
   },
+  methods: {
+    inputHandler(value) {
+      this.productQty = value;
+      this.input(value);
+    },
+  },
   template: `
   <SfGroupedProduct
     :settings="settings"
@@ -401,6 +503,12 @@ export const UseInputSlot = (args, { argTypes }) => ({
     return {
       productQty: 1,
     };
+  },
+  methods: {
+    inputHandler(value) {
+      this.productQty = value;
+      this.input(value);
+    },
   },
   template: `
   <SfGroupedProduct
@@ -435,6 +543,12 @@ export const UseTitleSlot = (args, { argTypes }) => ({
       productQty: 1,
     };
   },
+  methods: {
+    inputHandler(value) {
+      this.productQty = value;
+      this.input(value);
+    },
+  },
   template: `
   <SfGroupedProduct
     :settings="settings"
@@ -465,6 +579,12 @@ export const UsePriceSlot = (args, { argTypes }) => ({
     return {
       productQty: 1,
     };
+  },
+  methods: {
+    inputHandler(value) {
+      this.productQty = value;
+      this.input(value);
+    },
   },
   template: `
   <SfGroupedProduct

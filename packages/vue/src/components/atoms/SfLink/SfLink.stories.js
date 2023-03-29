@@ -25,7 +25,7 @@ export default {
     docs: {
       description: {
         component:
-          "The link component with route and nuxt options and slot to pass content.",
+          "Creates a NuxtLink, a native (a href) link, or a router link depending on the link property.  A slot can be used to pass content.",
       },
     },
   },
@@ -36,6 +36,15 @@ export default {
         category: "Props",
       },
       description: "Page route",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content for link",
     },
   },
 };

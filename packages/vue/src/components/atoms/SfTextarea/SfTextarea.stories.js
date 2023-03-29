@@ -213,6 +213,21 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description: "Emits when textarea value changes and loses focus.",
     },
+    "label ": {
+      table: {
+        category: "Slots",
+      },
+      description: "Named slot `label`. Use this slot to replace label content",
+    },
+    "error-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom error message ",
+    },
   },
 };
 
@@ -239,6 +254,7 @@ const Template = (args, { argTypes }) => ({
     :required="required"
     :disabled="disabled"
     :placeholder="placeholder"
+    :readonly="readonly"
     @change="change"
   />`,
 });

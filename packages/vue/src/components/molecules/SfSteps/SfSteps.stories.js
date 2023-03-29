@@ -54,6 +54,7 @@ export default {
           "Stepper component increasing dynamically on click. Used to guide user through defined path.Built from main component - SfSteps and internal component - SfStep.",
       },
     },
+    layout: "fullscreen",
   },
   argTypes: {
     canGoBack: {
@@ -117,14 +118,52 @@ export default {
       description: "Name of the step.",
     },
     "v-model": {
+      control: "number",
       table: {
-        disable: true,
+        type: {
+          summary: "number",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: 0,
+        },
       },
+      defaultValue: 0,
+      description: "v-model accepts `active` prop and emits `change` event",
     },
     change: {
       action: "change event emitted",
       table: { category: "Events", type: { summary: null } },
       description: "Emits change event with step value when step is clicked",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfSteps` component. Slot to replace steps content ",
+    },
+    "steps ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to customize the steps",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfStep` component. Use this slot to customize step in `SfStep` component",
     },
   },
 };
@@ -132,12 +171,23 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { SfSteps },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      currentStepIndex: 0,
+    };
+  },
+  methods: {
+    stepHandler(value) {
+      this.currentStepIndex = value;
+      this.change(value);
+    },
+  },
   template: `
   <SfSteps
-    :active="active"
+    :active="currentStepIndex"
     :steps="steps" 
     :can-go-back="canGoBack"
-    @change="change"
+    @change="stepHandler"
   >
     <SfStep v-for="(step, key) in steps" :key="key" :name="step">
       <div style="display: flex; align-items:center; justify-content:center; height: 18.75rem; background-color: #f2f2f2;">
@@ -152,9 +202,35 @@ Common.args = {
   steps: ["Details", "Shipping", "Payment", "Review"],
 };
 
-export const NoGoBack = Template.bind({});
+export const NoGoBack = (args, { argTypes }) => ({
+  components: { SfSteps },
+  props: Object.keys(argTypes),
+  data() {
+    return {
+      currentStepIndex: 1,
+    };
+  },
+  methods: {
+    stepHandler(value) {
+      this.currentStepIndex = value;
+      this.change(value);
+    },
+  },
+  template: `
+  <SfSteps
+    :active="currentStepIndex"
+    :steps="steps" 
+    :can-go-back="canGoBack"
+    @change="stepHandler"
+  >
+    <SfStep v-for="(step, key) in steps" :key="key" :name="step">
+      <div style="display: flex; align-items:center; justify-content:center; height: 18.75rem; background-color: #f2f2f2;">
+        [#default slot content] {{step}}
+      </div>
+    </SfStep>
+  </SfSteps>`,
+});
 NoGoBack.args = {
   ...Common.args,
-  active: 1,
   canGoBack: false,
 };

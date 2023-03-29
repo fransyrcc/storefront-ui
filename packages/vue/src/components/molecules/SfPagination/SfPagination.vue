@@ -1,6 +1,5 @@
 <template>
   <nav class="sf-pagination">
-    <!-- @slot Custom markup for previous page button -->
     <slot name="prev" v-bind="{ isDisabled: !canGoPrev, go, prev: getPrev }">
       <div
         :class="{ 'display-none': !hasArrows }"
@@ -14,7 +13,7 @@
           }"
           :link="hasRouter ? getLinkTo(getPrev) : null"
           :disabled="!hasRouter && !canGoPrev ? true : false"
-          aria-label="Go to previous page"
+          :aria-label="'Go to previous page'"
           data-testid="pagination-button-prev"
           @click="hasRouter ? null : go(getPrev)"
         >
@@ -88,7 +87,6 @@
         </component>
       </slot>
     </template>
-    <!-- @slot Custom markup for previous page button -->
     <slot name="next" v-bind="{ isDisabled: !canGoNext, go, next: getNext }">
       <div
         :class="{ 'display-none': !hasArrows }"
@@ -102,7 +100,7 @@
           }"
           :link="hasRouter ? getLinkTo(getNext) : null"
           :disabled="!hasRouter && !canGoNext ? true : false"
-          aria-label="Go to previous next"
+          :aria-label="'Go to previous next'"
           data-testid="pagination-button-next"
           @click="hasRouter ? null : go(getNext)"
         >

@@ -211,6 +211,24 @@ export default {
       description:
         "Native placeholder, can be added, but it's not default component prop.",
     },
+    icon: {
+      control: {
+        type: "object",
+      },
+      table: {
+        category: "Props",
+        type: {
+          summary: "object",
+        },
+      },
+      defaultValue: {
+        icon: "",
+        color: "",
+        size: "",
+      },
+      description:
+        "The icon configuration object which can have props: icon name, size and color as SfIcon specifies.",
+    },
     value: {
       control: "text",
       table: {
@@ -230,6 +248,33 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description:
         "Input event emits when input value changes. It is passed via v-on='listeners'",
+    },
+    "error-message": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom error message for form input ",
+    },
+    "show-password": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Custom show password button",
+    },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Named slot `label`. Use this slot to replace label content",
     },
   },
 };
@@ -253,6 +298,8 @@ const Template = (args, { argTypes }) => ({
     :error-message="errorMessage"
     :required="required"
     :disabled="disabled"
+    :icon="icon"
+    :placeholder="placeholder"
     :has-show-password="hasShowPassword"
     @change="change"
     @input="input"
@@ -264,6 +311,7 @@ Common.args = {
   type: "text",
   label: "First name",
   name: "name",
+  placeholder: "",
 };
 
 export const WithError = Template.bind({});
@@ -295,6 +343,8 @@ ShowPassword.args = {
   ...Common.args,
   type: "password",
   hasShowPassword: true,
+  label: "Password",
+  name: "password",
 };
 
 export const WithPlaceholder = (args, { argTypes }) => ({
@@ -318,7 +368,7 @@ export const WithPlaceholder = (args, { argTypes }) => ({
     :disabled="disabled"
     :has-show-password="hasShowPassword"
     placeholder="I'm a placeholder"
-    @change="onChange"
+    @change="change"
   />`,
 });
 
@@ -351,8 +401,9 @@ export const WithLabelSlot = (args, { argTypes }) => ({
     :error-message="errorMessage"
     :required="required"
     :disabled="disabled"
+    :icon="icon"
     :has-show-password="hasShowPassword"
-    @change="onChange"
+    @change="change"
     >
     <template #label="{label}">
       <SfIcon 
@@ -388,8 +439,9 @@ export const WithErrorSlot = (args, { argTypes }) => ({
     :error-message="errorMessage"
     :required="required"
     :disabled="disabled"
+    :icon="icon"
     :has-show-password="hasShowPassword"
-    @change="onChange"
+    @change="change"
     >
     <template #error-message="{errorMessage}">
       <div>

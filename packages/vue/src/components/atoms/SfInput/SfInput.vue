@@ -1,15 +1,16 @@
 <template>
   <div
+    v-will-change="'font-size'"
     class="sf-input"
     :class="{
       'has-text': !!value,
       invalid: !valid,
     }"
-    :data-testid="name"
+    :data-testid="nameWithoutWhitespace"
   >
     <div class="sf-input__wrapper">
       <input
-        :id="idWithoutWhitespace"
+        :id="nameWithoutWhitespace"
         v-focus
         v-bind="$attrs"
         :value="value"
@@ -18,29 +19,47 @@
         :name="name"
         :class="{ 'sf-input--is-password': isPassword }"
         :type="inputType"
+        :aria-invalid="!valid"
+        :aria-required="required"
+        :aria-describedby="
+          errorMessage ? `${nameWithoutWhitespace}-error` : null
+        "
         v-on="listeners"
       />
       <span class="sf-input__bar"></span>
       <label
         :class="{ 'display-none': !label }"
-        class="sf-input__label"
-        :for="name"
+        class="sf-input__label will-change"
+        :for="nameWithoutWhitespace"
       >
-        <!-- @slot Custom input label -->
         <slot name="label" v-bind="{ label }">{{ label }}</slot>
       </label>
       <slot
         v-bind="{
+          icon,
           isPasswordVisible,
           switchVisibilityPassword,
         }"
-        name="show-password"
+        name="icon"
       >
+        <SfButton
+          class="sf-input__button sf-button--pure"
+          :class="{ 'display-none': !icon.icon || isPassword }"
+          @click="$emit('click:icon')"
+        >
+          <SfIcon
+            :color="icon.color"
+            :size="icon.size"
+            :icon="icon.icon"
+            class="sf-input__icon"
+          >
+          </SfIcon>
+        </SfButton>
         <SfButton
           :class="{ 'display-none': !isPassword }"
           class="sf-input__password-button"
           type="button"
-          aria-label="switch-visibility-password"
+          :aria-label="'switch-visibility-password'"
           :aria-pressed="isPasswordVisible.toString()"
           @click="switchVisibilityPassword"
         >
@@ -50,17 +69,23 @@
               hidden: !isPasswordVisible,
             }"
             icon="show_password"
-            size="1.5rem"
+            size="18px"
+            color="black"
           ></SfIcon>
         </SfButton>
       </slot>
     </div>
     <div class="sf-input__error-message">
       <transition name="sf-fade">
-        <!-- @slot Custom error message of form input -->
         <slot name="error-message" v-bind="{ errorMessage }">
-          <div :class="{ 'display-none': valid }">{{ errorMessage }}</div></slot
-        >
+          <div
+            :id="`${nameWithoutWhitespace}-error`"
+            :class="{ 'display-none': valid }"
+            aria-live="assertive"
+          >
+            {{ errorMessage }}
+          </div>
+        </slot>
       </transition>
     </div>
   </div>
@@ -69,10 +94,12 @@
 import SfIcon from "../../atoms/SfIcon/SfIcon.vue";
 import SfButton from "../../atoms/SfButton/SfButton.vue";
 import { focus } from "../../../utilities/directives";
+import { willChange } from "../../../utilities/directives";
 export default {
   name: "SfInput",
   directives: {
     focus,
+    willChange,
   },
   components: { SfIcon, SfButton },
   inheritAttrs: false,
@@ -92,6 +119,12 @@ export default {
     type: {
       type: String,
       default: "text",
+    },
+    icon: {
+      type: Object,
+      default: () => {
+        return { icon: "" };
+      },
     },
     valid: {
       type: Boolean,
@@ -133,7 +166,7 @@ export default {
     isPassword() {
       return this.type === "password" && this.hasShowPassword;
     },
-    idWithoutWhitespace() {
+    nameWithoutWhitespace() {
       return this.name.replace(/\s/g, "");
     },
   },
@@ -169,6 +202,7 @@ export default {
   },
   methods: {
     switchVisibilityPassword() {
+      if (this.type !== "password") return;
       this.isPasswordVisible = !this.isPasswordVisible;
       this.inputType = this.isPasswordVisible ? "text" : "password";
     },

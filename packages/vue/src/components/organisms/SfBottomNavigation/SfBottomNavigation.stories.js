@@ -1,4 +1,4 @@
-import { icons } from "@storefront-ui/shared/icons/icons";
+import { icons } from "@storefront-ui/vue/icons/icons";
 import { SfBottomNavigation, SfCircleIcon, SfIcon } from "@storefront-ui/vue";
 import SfBottomNavigationItem from "./_internal/SfBottomNavigationItem.vue";
 const iconsNames = Object.keys(icons);
@@ -114,6 +114,36 @@ export default {
       },
       defaultValue: false,
       description: "Changes icon styling",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfBottomNavigation` component. Use this slot to place `SfBottomNavigationItem` elements",
+    },
+    "label ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfBottomNavigationItem` component. Use this slot to replace label element",
+    },
+    "icon ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfBottomNavigationItem` component. Use this slot to replace icon element",
     },
   },
 };

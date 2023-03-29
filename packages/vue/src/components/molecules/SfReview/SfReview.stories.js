@@ -125,7 +125,7 @@ export default {
       description: "Author of the review",
     },
     date: {
-      control: "date",
+      control: "text",
       table: {
         category: "Props",
         defaultValue: {
@@ -200,6 +200,45 @@ export default {
       },
       defaultValue: "",
       description: "Hide full text message for the review",
+    },
+    info: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Review information. Slot content will replace default `<div>` tag and its inner `<div>` tags",
+    },
+    icon: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Review icon. Slot content can be replaced by custom icon",
+    },
+    "author ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Review author. Slot content will replace default `<div>` tag",
+    },
+    "message ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Slot content will replace default `<div>` tag and its inner `<span>` and `<a>` tags.",
     },
   },
 };

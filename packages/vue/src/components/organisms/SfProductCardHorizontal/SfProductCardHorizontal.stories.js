@@ -42,6 +42,14 @@ export default {
         value: "5.3125rem",
         control: "text",
       },
+      "product-card-horizontal-image-width": {
+        value: "",
+        control: "text",
+      },
+      "product-card-horizontal-image-height": {
+        value: "",
+        control: "text",
+      },
       "product-card-horizontal-image-transition": {
         value: "opacity 150ms ease-in-out",
         control: "text",
@@ -223,22 +231,33 @@ export default {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      defaultValue: 140,
-      description: "Product image width, without unit",
+      defaultValue: null,
+      description:
+        "Product image width, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     imageHeight: {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      defaultValue: 200,
-      description: "Product image height, without unit",
+      defaultValue: null,
+      description:
+        "Product image height, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     link: {
       control: "text",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: "undefined",
+        },
       },
       defaultValue: "",
       description: "Link to product page",
@@ -370,6 +389,87 @@ export default {
       description:
         "Emits input event when quantity selector's value is changed",
     },
+    "image ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace image element",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace title element",
+    },
+    "description ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace description element",
+    },
+    configuration: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside configuration",
+    },
+    price: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace price element",
+    },
+    reviews: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace reviews element",
+    },
+    actions: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside actions",
+    },
+    "add-to-cart": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace add to cart button",
+    },
+    "wishlist-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace wishlist icon",
+    },
   },
 };
 
@@ -450,6 +550,8 @@ Common.args = {
   maxRating: 5,
   reviewsCount: 7,
   image: "assets/storybook/SfProductCardHorizontal/productA.jpg",
+  imageWidth: 140,
+  imageHeight: 200,
 };
 
 export const WithMultipleImages = Template.bind({

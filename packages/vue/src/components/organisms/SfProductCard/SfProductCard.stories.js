@@ -38,6 +38,8 @@ export default {
         control: "text",
       },
       "product-card-image-opacity": { value: "", control: "text" },
+      "product-card-image-width": { value: "", control: "text" },
+      "product-card-image-height": { value: "", control: "text" },
       "product-card-image-even-opacity": { value: "0", control: "text" },
       "product-card-badge-top": { value: "var(--spacer-xs)", control: "text" },
       "product-card-badge-left": { value: "0", control: "text" },
@@ -130,8 +132,11 @@ export default {
       control: "text",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: "null",
+        },
       },
-      defaultValue: "",
+      defaultValue: undefined,
       description: "Link to product page",
     },
     image: {
@@ -151,17 +156,25 @@ export default {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      defaultValue: "100%",
-      description: "Product image width, without unit",
+      defaultValue: null,
+      description:
+        "Product image width, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     imageHeight: {
       control: "number",
       table: {
         category: "Props",
+        defaultValue: {
+          summary: null,
+        },
       },
-      defaultValue: "auto",
-      description: "Product image height, without unit",
+      defaultValue: null,
+      description:
+        "Product image height, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     badgeLabel: {
       control: "text",
@@ -341,6 +354,98 @@ export default {
       },
       description: "Emits click:colors event when color is chosen",
     },
+    "image ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace image element",
+    },
+    "colors ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace color picker element",
+    },
+    badge: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace badge element",
+    },
+    "add-to-cart": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace add to cart button",
+    },
+    "add-to-cart-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Use this slot to replace add to cart icon (it's visible before an item will be added to cart)",
+    },
+    "adding-to-cart-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Use this slot to replace add to cart icon (it's visible during adding an item to cart)",
+    },
+    "wishlist-icon": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace wishlist icon",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace title element",
+    },
+    price: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace price element",
+    },
+    reviews: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace reviews element",
+    },
   },
 };
 
@@ -382,6 +487,8 @@ Common.args = {
   maxRating: 5,
   reviewsCount: 7,
   showAddToCartButton: true,
+  imageWidth: 216,
+  imageHeight: 326,
 };
 
 export const WithColorPicker = (args, { argTypes }) => ({

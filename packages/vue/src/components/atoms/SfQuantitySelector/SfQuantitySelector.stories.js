@@ -168,6 +168,14 @@ export default {
       },
       description: "Maximum allowed quantity.",
     },
+    ariaLabel: {
+      control: "text",
+      defaultValue: "Quantity",
+      table: {
+        category: "Props",
+      },
+      description: "Attribute for 'aria-label' tag.",
+    },
     blur: {
       action: "Blur event emitted",
       table: {
@@ -176,9 +184,18 @@ export default {
       description: "Emits when input field loses focus",
     },
     "v-model": {
+      control: "number",
       table: {
-        disable: true,
+        type: {
+          summary: "number",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: 1,
+        },
       },
+      defaultValue: 1,
+      description: "v-model accepts `qty` prop and emits native events",
     },
   },
 };
@@ -197,7 +214,7 @@ const Template = (args, { argTypes }) => ({
     :disabled="disabled"
     :min="min"
     :max="max"
-    aria-label="Quantity"
+    :aria-label="ariaLabel"
     :class="classes"
     @blur="blur"
   />`,

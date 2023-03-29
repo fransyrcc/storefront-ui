@@ -1,30 +1,35 @@
 <template>
-  <span
-    class="sf-image--wrapper"
-    :style="imageStyle"
-    data-testid="image-wrapper"
-  >
-    <img
+  <span class="sf-image--wrapper" data-testid="image-wrapper">
+    <component
+      :is="imageComponentTag"
       :loading="loading"
-      v-bind="$attrs"
+      v-bind="attributes"
       :src="src"
-      :srcset="srcset"
-      :sizes="sizes"
       :class="classes"
-      :width="width"
-      :height="height"
+      :style="styles"
       :alt="alt"
       @load="onLoad"
       v-on="$listeners"
     />
-    <img
-      :class="{ 'display-none': loaded || (loaded && placeholder) }"
-      class="sf-image--placeholder"
-      :src="placeholder"
-      alt="Placeholder"
-      :width="width"
-      :height="height"
-    />
+    <slot
+      name="placeholder"
+      v-bind="{
+        isPlaceholderVisible,
+        placeholder,
+        width,
+        height,
+        nuxtImgConfig,
+      }"
+    >
+      <img
+        :class="{ 'display-none': isPlaceholderVisible }"
+        class="sf-image--placeholder"
+        :src="placeholder"
+        alt="Placeholder"
+        :width="width || nuxtImgConfig.width"
+        :height="height || nuxtImgConfig.height"
+      />
+    </slot>
     <span
       :class="{ 'display-none': !$slots.default }"
       class="sf-image--overlay"
@@ -44,6 +49,8 @@
   </span>
 </template>
 <script>
+import imagePlaceholder from "@storefront-ui/shared/images/product_placeholder.svg";
+
 export default {
   name: "SfImage",
   props: {
@@ -64,21 +71,33 @@ export default {
       required: true,
     },
     width: {
-      type: [String, Number],
-      default: "",
+      type: [Number, String],
+      default: null,
+      validator: (value) => !isNaN(value),
     },
     height: {
-      type: [String, Number],
-      default: "",
+      type: [Number, String],
+      default: null,
+      validator: (value) => !isNaN(value),
     },
     placeholder: {
       type: String,
-      default: "",
+      default: imagePlaceholder,
     },
     loading: {
       type: String,
       default: "lazy",
       validator: (value) => ["", "lazy", "eager"].includes(value),
+    },
+    imageTag: {
+      type: String,
+      default: "img",
+      validator: (value) =>
+        ["", "img", "nuxt-img", "nuxt-picture"].includes(value),
+    },
+    nuxtImgConfig: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data() {
@@ -98,6 +117,7 @@ export default {
       return arr;
     },
     srcset() {
+      if (this.sortedSrcsets.length === 0) return null;
       return this.sortedSrcsets.reduce(
         (str, set) =>
           `${this.prefix(str)}${set.src} ${this.srcsetDescriptor(set)}`,
@@ -108,9 +128,7 @@ export default {
       const hasBreakpoints = this.sortedSrcsets.every(
         (set) => set.breakpoint && set.width
       );
-
       if (!hasBreakpoints) return null;
-
       return this.sortedSrcsets.reduce(
         (str, set) =>
           `${this.prefix(str)}${this.formatBreakpoint(
@@ -126,16 +144,47 @@ export default {
         return "sf-image";
       }
     },
-    imageStyle() {
+    imageComponentTag() {
+      return !this.$nuxt ? "img" : this.imageTag || "img";
+    },
+    isPlaceholderVisible() {
+      return this.loaded || (!this.loaded && !this.placeholder);
+    },
+    attributes() {
+      return this.imageTag === "img" || this.imageTag === ""
+        ? {
+            ...this.$attrs,
+            sizes: this.sizes,
+            srcset: this.srcset,
+          }
+        : {
+            ...this.$attrs,
+            width: this.width ? this.width : null,
+            height: this.height ? this.height : null,
+            ...this.nuxtImgConfig,
+          };
+    },
+    styles() {
+      if (
+        !this.width &&
+        !this.srcset &&
+        (this.imageTag === "img" || this.imageTag === "")
+      ) {
+        console.warn(`Missing required prop width.`);
+      }
+      if (
+        !this.height &&
+        !this.srcset &&
+        (this.imageTag === "img" || this.imageTag === "")
+      ) {
+        console.warn(`Missing required prop height.`);
+      }
+      const sizeHandler = (size) => {
+        return size === null ? null : `${size}px`;
+      };
       return {
-        "--image-width":
-          typeof this.width === "string"
-            ? this.formatDimension(this.width)
-            : `${this.width}px`,
-        "--image-height":
-          typeof this.height === "string"
-            ? this.formatDimension(this.height)
-            : `${this.height}px`,
+        "--_image-width": sizeHandler(this.width),
+        "--_image-height": sizeHandler(this.height),
       };
     },
   },
@@ -147,6 +196,7 @@ export default {
       return ("" + resolution).endsWith("x") ? resolution : `${resolution}x`;
     },
     formatDimension(size) {
+      if (typeof size === null) return;
       if (
         ["%"].includes(`${size}`.slice(-1)) ||
         ["rem"].includes(`${size}`.slice(-3)) ||

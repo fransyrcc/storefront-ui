@@ -176,6 +176,7 @@ export default {
           "Grouped Product component. Built from main component - SfHeader and internal components - SfHeaderNavigation and SfHeaderNavigationItem.",
       },
     },
+    layout: "fullscreen",
   },
   argTypes: {
     classes: {
@@ -212,7 +213,8 @@ export default {
         category: "Props for main component",
       },
       defaultValue: 35,
-      description: "Header logo height",
+      description:
+        "Header logo height. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     logoWidth: {
       control: "number",
@@ -220,7 +222,8 @@ export default {
         category: "Props for main component",
       },
       defaultValue: 34,
-      description: "Header logo width",
+      description:
+        "Header logo width. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     title: {
       control: "text",
@@ -285,7 +288,7 @@ export default {
       description: "Header search placeholder",
     },
     searchValue: {
-      control: "number",
+      control: "text",
       table: {
         category: "Props for main component",
       },
@@ -301,7 +304,8 @@ export default {
         },
       },
       defaultValue: 0,
-      description: "Header cart items quantity",
+      description:
+        "*This prop is passed to slot and changing this prop won't be visible in storybook. Header cart items quantity. ",
     },
     wishlistItemsQty: {
       control: "number",
@@ -312,7 +316,8 @@ export default {
         },
       },
       defaultValue: 0,
-      description: "Header wishlist items quantity",
+      description:
+        "*This prop is passed to slot and changing this prop won't be visible in storybook. Header wishlist items quantity",
     },
     isSticky: {
       control: "boolean",
@@ -383,6 +388,96 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description: "Emits click:account event when account button is clicked",
     },
+    "logo ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeader` component. Use this slot to replace logo element",
+    },
+    aside: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeader` component. Use this slot to pass aside content for example language or currency selector",
+    },
+    navigation: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeader` component. Use this slot to pass navigation elements",
+    },
+    search: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeader` component. Use this slot to pass search element",
+    },
+    "header-icons": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeader` component. Use this slot to replace default icons",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfHeaderNavigation` component. Use this slot to place navigation elements",
+    },
+    "default ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Default slot for `SfHeaderNavigationItem` component. Use this slot to place navigation items",
+    },
+    "desktop-navigation-item": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeaderNavigationItem` component. Use this slot to place desktop navigation",
+    },
+    "mobile-navigation-item": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description:
+        "Named slot for `SfHeaderNavigationItem` component. Use this slot to place mobile navigation",
+    },
   },
 };
 
@@ -392,7 +487,6 @@ const Template = (args, { argTypes }) => ({
   data() {
     return {
       navigationItems: ["women", "man", "kids"],
-      searchValues: "",
     };
   },
   methods: {
@@ -410,14 +504,12 @@ const Template = (args, { argTypes }) => ({
     :logoWidth="logoWidth"
     :active-icon="activeIcon"
     :search-placeholder="searchPlaceholder"
-    :search-value="searchValues"
+    :search-value="searchValue"
     :cart-icon="cartIcon"
     :wishlist-icon="wishlistIcon"
     :is-sticky="isSticky"
     :is-nav-visible="isNavVisible"
     :account-icon="accountIcon"
-    :cart-items-qty="cartItemsQty"
-    :wishlist-items-qty="wishlistItemsQty"
     @click:cart="this['click:cart']"
     @click:wishlist="this['click:wishlist']"
     @click:account="this['click:account']"
@@ -438,4 +530,5 @@ export const Common = Template.bind({});
 Common.args = {
   title: "Storefront UI",
   logo: "/assets/logo.svg",
+  searchValue: "",
 };

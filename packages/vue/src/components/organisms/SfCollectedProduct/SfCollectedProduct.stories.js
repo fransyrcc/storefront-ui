@@ -30,6 +30,14 @@ export default {
         value: "var(--c-light)",
         control: "text",
       },
+      "collected-product-image-width": {
+        value: "",
+        control: "text",
+      },
+      "collected-product-image-height": {
+        value: "",
+        control: "text",
+      },
       "collected-product-main-margin": {
         value: "0 0 0 var(--spacer-sm)",
         control: "text",
@@ -145,7 +153,8 @@ export default {
         },
       },
       defaultValue: 140,
-      description: "Product image width, without unit",
+      description:
+        "Product image width, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     imageHeight: {
       control: "number",
@@ -156,7 +165,8 @@ export default {
         },
       },
       defaultValue: 200,
-      description: "Product image height, without unit",
+      description:
+        "Product image height, without unit. Could be an integer passed as Number or String type, but values like 'auto' or '100%' are not allowed.",
     },
     title: {
       control: "text",
@@ -243,19 +253,28 @@ export default {
     },
     link: {
       control: "text",
+      defaultValue: undefined,
       table: {
         category: "Props",
         defaultValue: {
-          summary: "",
+          summary: "null",
         },
       },
-      defaultValue: "",
       description: "Link to product",
     },
     "v-model": {
+      control: "number",
       table: {
-        disable: true,
+        type: {
+          summary: "number",
+        },
+        category: "v-model",
+        defaultValue: {
+          summary: 1,
+        },
       },
+      defaultValue: 1,
+      description: "v-model accepts `qty` prop and emits native events",
     },
     hasMoreActions: {
       control: "boolean",
@@ -313,6 +332,78 @@ export default {
       description:
         "Emits input event when actions button in mobile mode is clicked",
     },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace title element",
+    },
+    "image ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace image element",
+    },
+    actions: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass custom actions",
+    },
+    configuration: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass custom configuration",
+    },
+    price: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass custom price element",
+    },
+    input: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass custom input element",
+    },
+    remove: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass custom remove button",
+    },
+    "more-actions": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to pass other custom actions",
+    },
   },
 };
 
@@ -327,7 +418,6 @@ const Template = (args, { argTypes }) => ({
   methods: {
     inputHandler(quantityValue) {
       this.quantity = quantityValue;
-      this.input(this.quantity);
     },
   },
   template: `
@@ -373,6 +463,16 @@ WithLink.args = {
 export const UseActionsSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -385,7 +485,6 @@ export const UseActionsSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >
@@ -399,6 +498,16 @@ UseActionsSlot.args = { ...Common.args };
 export const UseConfigurationSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -411,7 +520,6 @@ export const UseConfigurationSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >
@@ -425,6 +533,16 @@ UseConfigurationSlot.args = { ...Common.args };
 export const UseImageSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -437,7 +555,6 @@ export const UseImageSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >
@@ -451,6 +568,16 @@ UseImageSlot.args = { ...Common.args };
 export const UseInputSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -463,7 +590,6 @@ export const UseInputSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >
@@ -477,6 +603,16 @@ UseInputSlot.args = { ...Common.args };
 export const UseTitleSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -489,7 +625,6 @@ export const UseTitleSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >
@@ -503,6 +638,16 @@ UseTitleSlot.args = { ...Common.args };
 export const UsePriceSlot = (args, { argTypes }) => ({
   components: { SfCollectedProduct },
   props: Object.keys(argTypes),
+  data() {
+    return {
+      quantity: this.qty,
+    };
+  },
+  methods: {
+    inputHandler(quantityValue) {
+      this.quantity = quantityValue;
+    },
+  },
   template: `
   <SfCollectedProduct
     :qty="quantity"
@@ -515,7 +660,6 @@ export const UsePriceSlot = (args, { argTypes }) => ({
     :minQty="minQty"
     :maxQty="maxQty"
     :regular-price="regularPrice"
-    :special-price="specialPrice"
     :special-price="specialPrice"
     :hasMoreActions="hasMoreActions"
   >

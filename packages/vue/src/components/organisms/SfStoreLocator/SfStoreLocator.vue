@@ -5,7 +5,6 @@
         <div class="sf-store-locator__stores">
           Stores found: <span>{{ stores.length }}</span>
         </div>
-        <!-- @slot Use this slot to show stores cards -->
         <slot
           v-bind="{
             centerOn,
@@ -43,7 +42,6 @@
             v-bind="markerOptions"
           >
             <LIcon :icon-size="markerIconSize" :icon-anchor="markerIconAnchor">
-              <!-- @slot Use this slot to change the icon of the stores, remember to update `markerIconSize` and `markerIconAnchor` accordingly-->
               <slot name="marker-icon">
                 <SfIcon
                   v-focus
@@ -55,7 +53,6 @@
             </LIcon>
           </LMarker>
         </LMap>
-        <!-- @slot Use this slot to customise the loading indicator while the map librry loads -->
         <slot name="map-loading">
           <SfLoader
             :class="{ 'display-none': mapReady }"
@@ -72,6 +69,7 @@ import { focus } from "../../../utilities/directives";
 import SfIcon from "../../atoms/SfIcon/SfIcon.vue";
 import SfLoader from "../../atoms/SfLoader/SfLoader.vue";
 import SfStore from "./_internal/SfStore.vue";
+
 Vue.component("SfStore", SfStore);
 export default {
   name: "SfStoreLocator",
@@ -173,7 +171,16 @@ export default {
       },
     },
   },
-  mounted() {
+  async mounted() {
+    // Fix lack of marker icons
+    const { Icon } = await import('leaflet');
+    delete Icon.Default.prototype._getIconUrl;
+    Icon.Default.mergeOptions({
+      iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+      iconUrl: require("leaflet/dist/images/marker-icon.png"),
+      shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+    });
+
     import("leaflet/dist/leaflet.css");
     import("vue2-leaflet").then(
       ({ LMap, LTileLayer, LMarker, LIcon, LControl, LControlZoom }) => {

@@ -1,15 +1,27 @@
 <template>
-  <div class="sf-product-card" data-testid="product-card">
+  <div
+    class="sf-product-card"
+    :class="{ 'has-colors': colors.length }"
+    data-testid="product-card"
+  >
     <div class="sf-product-card__image-wrapper">
       <slot
         name="image"
-        v-bind="{ image, title, link, imageHeight, imageWidth }"
+        v-bind="{
+          image,
+          title,
+          link,
+          imageHeight,
+          imageWidth,
+          imageTag,
+          nuxtImgConfig,
+        }"
       >
         <SfButton
           :link="link"
           class="sf-button--pure sf-product-card__link"
           data-testid="product-link"
-          aria-label="Go To Product"
+          :aria-label="'Go To Product'"
           v-on="$listeners"
         >
           <template v-if="Array.isArray(image)">
@@ -21,7 +33,8 @@
               :alt="title"
               :width="imageWidth"
               :height="imageHeight"
-              :placeholder="productPlaceholder"
+              :image-tag="imageTag"
+              :nuxt-img-config="nuxtImgConfig"
             />
           </template>
           <SfImage
@@ -31,16 +44,17 @@
             :alt="title"
             :width="imageWidth"
             :height="imageHeight"
-            :placeholder="productPlaceholder"
+            :image-tag="imageTag"
+            :nuxt-img-config="nuxtImgConfig"
           />
         </SfButton>
       </slot>
       <slot name="colors" v-bind="{ colors }">
         <SfColorPicker
           :class="{ 'display-none': !colors.length }"
-          class="sf-product-card__colors"
+          class="sf-product-card__colors smartphone-only"
           label="Choose color"
-          :is-open="!isMobile || openColorPicker"
+          :is-open="openColorPicker"
           @click:toggle="toggleColorPicker"
         >
           <SfColor
@@ -49,8 +63,37 @@
             :color="color.color"
             :selected="color.selected"
             class="sf-product-card__color"
+            :class="{ 'display-none': i > 3 && showBadge }"
             @click="handleSelectedColor(i)"
           />
+          <SfBadge
+            v-if="showBadge"
+            class="sf-product-card__colors-badge color-secondary"
+          >
+            {{ `+${colors.length - 4}` }}
+          </SfBadge>
+        </SfColorPicker>
+        <SfColorPicker
+          :class="{ 'display-none': !colors.length }"
+          class="sf-product-card__colors desktop-only"
+          label="Choose color"
+          :is-open="true"
+        >
+          <SfColor
+            v-for="(color, i) in colors"
+            :key="color.value"
+            :color="color.color"
+            :selected="color.selected"
+            class="sf-product-card__color"
+            :class="{ 'display-none': i > 3 && showBadge }"
+            @click="handleSelectedColor(i)"
+          />
+          <SfBadge
+            v-if="showBadge"
+            class="sf-product-card__colors-badge color-secondary"
+          >
+            {{ `+${colors.length - 4}` }}
+          </SfBadge>
         </SfColorPicker>
       </slot>
       <slot name="badge" v-bind="{ badgeLabel, badgeColor }">
@@ -75,7 +118,7 @@
           />
         </slot>
       </SfButton>
-      <template :class="{ 'display-none': !showAddToCartButton }">
+      <div :class="{ 'display-none': !showAddToCartButton }">
         <slot
           name="add-to-cart"
           v-bind="{
@@ -122,7 +165,7 @@
             </span>
           </SfCircleIcon>
         </slot>
-      </template>
+      </div>
     </div>
     <slot name="title" v-bind="{ title, link }">
       <SfButton
@@ -179,11 +222,6 @@ import SfBadge from "../../atoms/SfBadge/SfBadge.vue";
 import SfButton from "../../atoms/SfButton/SfButton.vue";
 import SfColorPicker from "../../molecules/SfColorPicker/SfColorPicker.vue";
 import SfColor from "../../atoms/SfColor/SfColor.vue";
-import {
-  mapMobileObserver,
-  unMapMobileObserver,
-} from "../../../utilities/mobile-observer";
-import productPlaceholder from "@storefront-ui/shared/images/product_placeholder.svg";
 export default {
   name: "SfProductCard",
   components: {
@@ -203,12 +241,12 @@ export default {
       default: "",
     },
     imageWidth: {
-      type: [String, Number],
-      default: "100%",
+      type: [Number, String],
+      default: null,
     },
     imageHeight: {
-      type: [String, Number],
-      default: "auto",
+      type: [Number, String],
+      default: null,
     },
     badgeLabel: {
       type: String,
@@ -228,7 +266,7 @@ export default {
     },
     link: {
       type: [String, Object],
-      default: "",
+      default: null,
     },
     /**
      * Link element tag
@@ -282,16 +320,22 @@ export default {
       type: Boolean,
       default: false,
     },
+    imageTag: {
+      type: String,
+      default: "",
+    },
+    nuxtImgConfig: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
     return {
       isAddingToCart: false,
       openColorPicker: false,
-      productPlaceholder,
     };
   },
   computed: {
-    ...mapMobileObserver(),
     isSFColors() {
       return SF_COLORS.includes(this.badgeColor.trim());
     },
@@ -311,9 +355,9 @@ export default {
       const defaultClass = "sf-button--pure sf-product-card__wishlist-icon";
       return `${defaultClass} ${this.isInWishlist ? "on-wishlist" : ""}`;
     },
-  },
-  beforeDestroy() {
-    unMapMobileObserver();
+    showBadge() {
+      return this.colors.length > 5;
+    },
   },
   methods: {
     toggleIsInWishlist() {
@@ -332,9 +376,7 @@ export default {
         this.colors.map((color, i) => {
           if (colorIndex === i) {
             this.$emit("click:colors", color);
-            if (this.isMobile) {
-              this.toggleColorPicker();
-            }
+            this.openColorPicker = false;
           }
         });
       }

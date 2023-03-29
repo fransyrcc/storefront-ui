@@ -54,8 +54,6 @@ export default {
     },
     // end of code generated automatically
     docs: {
-      inlineStories: false,
-      iframeHeight: "25em",
       description: {
         component: "Dropdown component",
       },
@@ -123,6 +121,42 @@ export default {
       table: { category: "Events", type: { summary: null } },
       description: "Emits click:open event when trigger button is clicked",
     },
+    opener: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace button that opens dropdown",
+    },
+    default: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to place content inside the dropdown",
+    },
+    cancel: {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace cancel button",
+    },
+    "title ": {
+      table: {
+        category: "Slots",
+        type: {
+          summary: null,
+        },
+      },
+      description: "Use this slot to replace title",
+    },
   },
 };
 
@@ -145,22 +179,25 @@ const Template = (args, { argTypes }) => ({
     },
   },
   template: `
-  <SfDropdown
-    :class="classes" 
-    :is-open="isDropdownOpen"  
-    @click:open="openHandler"
-    @click:close="closeHandler"
-    :persistent="persistent" 
-    :title="title"
-  >
-    <template>
-      <SfList>
-        <SfListItem v-for="(action, key) in actionList" :key="key">
-          <SfButton class="sf-button--full-width sf-button--underlined color-primary" @click.stop="isOpen = false">{{ action }}</SfButton>
-        </SfListItem>
-      </SfList>
-    </template> 
-  </SfDropdown>`,
+  <div style="position: relative; height: 500px;">
+    <SfDropdown
+      :class="classes" 
+      :is-open="isDropdownOpen"  
+      @click:open="openHandler"
+      @click:close="closeHandler"
+      :persistent="persistent" 
+      :title="title"
+      style="position: absolute;"
+    >
+      <template>
+        <SfList>
+          <SfListItem v-for="(action, key) in actionList" :key="key">
+            <SfButton class="sf-button--full-width sf-button--underlined color-primary" @click.stop="isDropdownOpen = false">{{ action }}</SfButton>
+          </SfListItem>
+        </SfList>
+      </template> 
+    </SfDropdown>
+    </div>`,
 });
 
 export const Common = Template.bind({});
@@ -171,14 +208,14 @@ Common.args = {
 export const Persistent = Template.bind({});
 Persistent.args = {
   ...Common.args,
-  isDropdownOpen: true,
+  isOpen: true,
   persistent: true,
 };
 
 export const IsOpened = Template.bind({});
 IsOpened.args = {
   ...Common.args,
-  isDropdownOpen: true,
+  isOpen: true,
 };
 
 export const WithUpModifier = Template.bind({});

@@ -21,6 +21,14 @@ describe("SfButton.vue", () => {
     });
     expect(wrapper.classes("is-disabled--button")).toBe(true);
   });
+  it("renders component as `submit` button", () => {
+    const wrapper = shallowMount(SfButton, {
+      propsData: {
+        type: "submit",
+      },
+    });
+    expect(wrapper.attributes("type")).toBe("submit");
+  });
   it("renders component as disabled link", () => {
     const wrapper = shallowMount(SfButton, {
       propsData: {
@@ -29,6 +37,14 @@ describe("SfButton.vue", () => {
       },
     });
     expect(wrapper.classes("is-disabled--link")).toBe(true);
+  });
+  it("renders component as button with aria-label", () => {
+    const wrapper = shallowMount(SfButton, {
+      propsData: {
+        ariaLabel: "Go to ...",
+      },
+    });
+    expect(wrapper.attributes("aria-label")).toBe("Go to ...");
   });
   it("renders content via default slot", () => {
     const msg = "HelloWorld";
